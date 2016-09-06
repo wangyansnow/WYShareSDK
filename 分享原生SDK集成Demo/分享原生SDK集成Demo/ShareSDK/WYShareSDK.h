@@ -38,7 +38,9 @@ typedef NS_ENUM(NSInteger, WeiboShareScene) {
 ////////////////////////////////////////  WYShareSDK   ////////////////////////////////////////////
 @interface WYShareSDK : NSObject
 
-+ (void)initialShareSDK;
++ (void)registerWeChatApp:(NSString *)wxAppId;
++ (void)registerQQApp:(NSString *)qqAppId;
++ (void)registerWeiboApp:(NSString *)wbAppKey;
 
 + (BOOL)handleOpenURL:(NSURL *)url;
 

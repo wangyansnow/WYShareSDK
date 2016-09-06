@@ -90,6 +90,7 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+<!--  让iOS9 退回到以前可以支持http请求  -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

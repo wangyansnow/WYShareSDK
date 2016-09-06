@@ -13,12 +13,6 @@
 #import "WeiboSDK.h"
 #import "WYShareDefine.h"
 
-#define WXAppId    @"wx7074076f395c69d9"
-#define QQAppId    @"1103515189"
-#define WBAppId    @"2273722657"
-#define kUMENG_WXAppSecret   @"2db8c8e74a1cec2edfde87711bf3eff7"
-#define kUMENG_QQAppKey      @"ZkGVW2gmcpF3ls7E"
-
 ////////////////////////////////////////  WYShareResponse  /////////////////////////////////////////////
 @implementation WYShareResponse
 
@@ -51,17 +45,19 @@
     return instance;
 }
 
-+ (void)initialShareSDK {
++ (void)registerWeChatApp:(NSString *)wxAppId {
     // 1.注册微信
-    [WXApi registerApp:WXAppId];
-    
+    [WXApi registerApp:wxAppId];
+}
++ (void)registerQQApp:(NSString *)qqAppId {
     // 2.注册QQ
-    TencentOAuth *auth = [[TencentOAuth alloc] initWithAppId:QQAppId andDelegate:nil];
+    TencentOAuth *auth = [[TencentOAuth alloc] initWithAppId:qqAppId andDelegate:nil];
     NSLog(@"auth = %@", auth);
-    
+}
++ (void)registerWeiboApp:(NSString *)wbAppKey {
     // 3.注册Weibo
     [WeiboSDK enableDebugMode:YES];
-    [WeiboSDK registerApp:WBAppId];
+    [WeiboSDK registerApp:wbAppKey];
 }
 
 + (BOOL)handleOpenURL:(NSURL *)url {
