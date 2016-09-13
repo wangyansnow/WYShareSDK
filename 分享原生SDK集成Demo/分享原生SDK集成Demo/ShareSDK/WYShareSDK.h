@@ -119,5 +119,22 @@ typedef NS_ENUM(NSInteger, WeiboShareScene) {
              thumbImage:(NSData *)thumbImageData
                   scene:(WeiboShareScene)scene
                finished:(void(^)(WYShareResponse *response))finished;
+/// 只支持分享 `音乐🎵` 到朋友圈
++ (void)weiboShareMusicURL:(NSString *)url
+                 streamURL:(NSString *)streamUrl
+                     title:(NSString *)title
+               description:(NSString *)description
+             thumbnailData:(NSData *)thumbnailData
+                  finished:(void(^)(WYShareResponse *response))finished;
+
+/// 只支持分享 `视频📺` 到朋友圈
++ (void)weiboShareVideoURL:(NSString *)url
+                 streamURL:(NSString *)streamUrl
+                     title:(NSString *)title
+               description:(NSString *)description
+             thumbnailData:(NSData *)thumbnailData
+                  finished:(void(^)(WYShareResponse *response))finished;
+
+
 
 @end

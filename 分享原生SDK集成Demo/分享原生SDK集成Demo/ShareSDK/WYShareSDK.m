@@ -294,6 +294,7 @@
                  scene:(WeiboShareScene)scene
               finished:(void(^)(WYShareResponse *response))finished {
     
+    HasWeiboInstall
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -306,8 +307,8 @@
                   scene:(WeiboShareScene)scene
                 finshed:(void(^)(WYShareResponse *response))finished {
     
+    HasWeiboInstall
     [[self defaultShareSDK] setFinished:finished];
-    
     WBMessageObject *message = [WBMessageObject message];
     
     WBImageObject *imageObj = [WBImageObject object];
@@ -325,6 +326,7 @@
                    scene:(WeiboShareScene)scene
                 finished:(void(^)(WYShareResponse *response))finished {
     
+    HasWeiboInstall
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -337,6 +339,53 @@
     message.mediaObject = webpage;
     
     [WeiboSDK sendRequest:[self weiboRequestWithMessage:message scene:scene]];
+}
+
+
++ (void)weiboShareMusicURL:(NSString *)url
+                 streamURL:(NSString *)streamUrl
+                     title:(NSString *)title
+               description:(NSString *)description
+             thumbnailData:(NSData *)thumbnailData
+                  finished:(void(^)(WYShareResponse *response))finished {
+    HasWeiboInstall
+    
+    [[self defaultShareSDK] setFinished:finished];
+    WBMessageObject *message = [WBMessageObject message];
+    
+    WBMusicObject *musicObject = [WBMusicObject object];
+    musicObject.objectID = @"";
+    musicObject.title = title;
+    musicObject.description = description;
+    musicObject.thumbnailData = thumbnailData;
+    musicObject.musicUrl = url;
+    musicObject.musicStreamUrl = streamUrl;
+    
+    message.mediaObject = musicObject;
+    [WeiboSDK sendRequest:[WBSendMessageToWeiboRequest requestWithMessage:message]];
+}
+
++ (void)weiboShareVideoURL:(NSString *)url
+                 streamURL:(NSString *)streamUrl
+                     title:(NSString *)title
+               description:(NSString *)description
+             thumbnailData:(NSData *)thumbnailData
+                  finished:(void(^)(WYShareResponse *response))finished {
+    HasWeiboInstall
+    
+    [[self defaultShareSDK] setFinished:finished];
+    WBMessageObject *message = [WBMessageObject message];
+    
+    WBVideoObject *videoObject = [WBVideoObject object];
+    videoObject.objectID = @"";
+    videoObject.title = title;
+    videoObject.description = description;
+    videoObject.thumbnailData = thumbnailData;
+    videoObject.videoUrl = url;
+    videoObject.videoStreamUrl = streamUrl;
+    
+    message.mediaObject = videoObject;
+    [WeiboSDK sendRequest:[WBSendMessageToWeiboRequest requestWithMessage:message]];
 }
 
 + (WBBaseRequest *)weiboRequestWithMessage:(WBMessageObject *)message scene:(WeiboShareScene) scene {

@@ -19,19 +19,19 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
 
 #define HasQQInstall \
     if (![QQApiInterface isQQInstalled]) { \
-       [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装手机QQ" delegate:nil cancelButtonTitle:@"" otherButtonTitles:nil] show]; \
+       [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装手机QQ" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
         return; \
     }
 
 #define HasWXInstall \
     if (![WXApi isWXAppInstalled]) { \
-        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微信" delegate:nil cancelButtonTitle:@"" otherButtonTitles:nil] show]; \
+        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微信" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
         return; \
     }
 
 #define HasWeiboInstall \
     if (![WeiboSDK isWeiboAppInstalled]) { \
-       [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微博" delegate:nil cancelButtonTitle:@"" otherButtonTitles:nil] show]; \
+       [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微博" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
         return; \
     }
 

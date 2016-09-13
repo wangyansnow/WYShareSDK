@@ -167,7 +167,7 @@
     [message setThumbImage:[UIImage imageNamed:@"ic_account_tyj"]];
     
     WXMusicObject *musicObj = [WXMusicObject object];
-    musicObj.musicUrl = kWechatMusicURL;  // 音乐url
+    musicObj.musicUrl = kWechatMusicURL;  // 音乐网页url
     musicObj.musicDataUrl = @"http://stream20.qqmusic.qq.com/32464723.mp3";  // 音乐数据url
     message.mediaObject = musicObj;
     
@@ -237,6 +237,42 @@
     message.mediaObject = webpage;
     
     [WeiboSDK sendRequest:[self weiboRequestWithMessage:message]];
+}
+
+/// 只支持朋友圈内分享
+- (IBAction)weiboMusicShare {
+    HasWeiboInstall
+    
+    WBMessageObject *message = [WBMessageObject message];
+    
+    WBMusicObject *musicObject = [WBMusicObject object];
+    musicObject.objectID = @"";
+    musicObject.title = @"微博音乐分享";
+    musicObject.description = @"王俨分享的音乐到微博的详细描述description";
+    musicObject.thumbnailData = UIImagePNGRepresentation([UIImage imageNamed:@"ic_account_tyj"]);
+    musicObject.musicUrl = @"http://stream20.qqmusic.qq.com/32464723.mp3";
+    musicObject.musicStreamUrl = @"http://stream20.qqmusic.qq.com/32464723.mp3";
+    
+    message.mediaObject = musicObject;
+    [WeiboSDK sendRequest:[WBSendMessageToWeiboRequest requestWithMessage:message]];
+}
+
+/// 只支持朋友圈内分享
+- (IBAction)weiboVideoShare {
+    HasWeiboInstall
+    
+    WBMessageObject *message = [WBMessageObject message];
+    
+    WBVideoObject *videoObject = [WBVideoObject object];
+    videoObject.objectID = @"";
+    videoObject.title = @"视频分享";
+    videoObject.description = @"这个视频很好看";
+    videoObject.thumbnailData = UIImagePNGRepresentation([UIImage imageNamed:@"ic_account_tyj"]);
+    videoObject.videoUrl = @"http://v.youku.com/v_show/id_XNTUxNDY1NDY4.html";
+    videoObject.videoStreamUrl = videoObject.videoUrl;
+    
+    message.mediaObject = videoObject;
+    [WeiboSDK sendRequest:[WBSendMessageToWeiboRequest requestWithMessage:message]];
 }
 
 - (WBBaseRequest *)weiboRequestWithMessage:(WBMessageObject *)message {
