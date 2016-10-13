@@ -80,7 +80,7 @@
     } else if ([resp isKindOfClass:[QQBaseResp class]]) { // QQ分享
         QQBaseResp *qqresp = (QQBaseResp *)resp;
         if (_finished) {
-            WYShareResponse *response = [WYShareResponse shareResponseWithSucess:(qqresp.type == 0) errorStr:qqresp.errorDescription];
+            WYShareResponse *response = [WYShareResponse shareResponseWithSucess:([qqresp.result intValue] == 0) errorStr:qqresp.errorDescription];
             _finished(response);
         }
     }
