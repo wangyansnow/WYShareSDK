@@ -9,8 +9,8 @@
 #import "AppDelegate.h"
 #import "WYShareSDK.h"
 
-#define WXAppId    @"wx7074076f395c69d9"
-#define QQAppId    @"1103515189"
+#define WXAppId    @"wxd69cc042cbd89299"
+#define QQAppId    @"1104133929"
 #define WBAppKey    @"2273722657"
 
 
