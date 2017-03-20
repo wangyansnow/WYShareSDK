@@ -293,4 +293,32 @@
     }];
 }
 
+#pragma mark - 三方登录
+- (IBAction)wxLoginBtnClick {
+    [WYShareSDK wy_weChatLoginFinished:^(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error) {
+        if (error) {
+            NSLog(@"error = %@", error);
+            return;
+        }
+        
+        NSLog(@"wxToken = %@", wxToken);
+        NSLog(@"wxUserinfo = %@", wxUserinfo);
+    }];
+}
+
+- (IBAction)qqLoginBtnClick {
+    
+}
+
+- (IBAction)refreshWxTokenBtnClick {
+    [WYShareSDK wy_weChatRefreshAccessToken:^(WYWXToken *wxToken, NSError *error) {
+        NSLog(@"error = %@", error);
+        NSLog(@"wxToken = %@", wxToken);
+    }];
+}
+
+
+
+
+
 @end

@@ -13,22 +13,14 @@
 #import "WeiboSDK.h"
 #import "WYShareDefine.h"
 
-////////////////////////////////////////  WYShareResponse  /////////////////////////////////////////////
-@implementation WYShareResponse
-
-+ (instancetype)shareResponseWithSucess:(BOOL)success errorStr:(NSString *)errorStr {
-    WYShareResponse *response = [[WYShareResponse alloc] init];
-    response->_success = success;
-    response->_errorStr = errorStr;
-    return response;
-}
-
-@end
-
-////////////////////////////////////////  WYShareSDK   ////////////////////////////////////////////
 @interface WYShareSDK ()<WXApiDelegate, QQApiInterfaceDelegate, WeiboSDKDelegate>
 
 @property (nonatomic, copy) void(^finished)(WYShareResponse *response);
+@property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
+
+
+@property (nonatomic, copy) NSString *wxAppId;
+@property (nonatomic, copy) NSString *wxAppSecret;
 
 @end
 
@@ -45,7 +37,11 @@
     return instance;
 }
 
-+ (void)registerWeChatApp:(NSString *)wxAppId {
++ (void)registerWeChatApp:(NSString *)wxAppId wxAppSecret:(NSString *)wxAppSecret {
+    WYShareSDK *shareSDK = [self defaultShareSDK];
+    shareSDK.wxAppId = wxAppId;
+    shareSDK.wxAppSecret = wxAppSecret;
+    
     // 1.注册微信
     [WXApi registerApp:wxAppId];
 }
@@ -70,7 +66,12 @@
 
 #pragma mark - QQApiInterfaceDelegate/WXApiDelegate
 - (void)onResp:(id)resp {
-    if ([resp isKindOfClass:[BaseResp class]]) { // 微信分享
+    if ([resp isKindOfClass:[BaseResp class]]) { // 微信
+        if ([resp isKindOfClass:[SendAuthResp class]] ) { // 微信登录
+            [self wy_handleWXLoginResponse:resp];
+            return;
+        }
+        
         BaseResp *wxresp = (BaseResp *)resp;
         if (_finished) {
             WYShareResponse *response = [WYShareResponse shareResponseWithSucess:(wxresp.errCode == 0) errorStr:wxresp.errStr];
@@ -84,6 +85,48 @@
             _finished(response);
         }
     }
+}
+
+#pragma mark - private
+- (void)wy_handleWXLoginResponse:(SendAuthResp *)resp {
+    if (resp.errCode != 0)  {
+        NSError *error = [NSError errorWithDomain:@"微信客户端授权失败" code:resp.errCode userInfo:nil];
+        BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+        return;
+    };
+    
+    NSString *urlStr = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code", self.wxAppId, self.wxAppSecret, resp.code];
+    
+    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:urlStr] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if (error || !data) {
+            NSString *errorStr = [NSString stringWithFormat:@"获取Token失败，%@", error.domain];
+            error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
+            BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+            return;
+        }
+        
+        NSError *jsonError;
+        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
+        if (jsonError) {
+            BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+            return;
+        }
+        
+        self.wxToken = [WYWXToken modelWithDict:obj];
+        [self.wxToken saveModelWithKey:WYWXTokenKey];
+        
+        [WYWXUserinfo wy_fetchWXUserinfoWithAccessToken:self.wxToken.access_token openId:self.wxToken.openid finished:^(WYWXUserinfo *wxUserinfo, NSError *error) {
+            if (error) {
+                NSString *errorStr = [NSString stringWithFormat:@"获取用户详细信息失败,%@", error.domain];
+                error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
+                BLOCK_EXEC(_wxLoginFinished, nil, self.wxToken, error);
+                return;
+            }
+
+            BLOCK_EXEC(_wxLoginFinished, wxUserinfo, self.wxToken, nil);
+        }];
+    }] resume];
 }
 
 #pragma mark - WeiboSDKDelegate
@@ -394,6 +437,57 @@
     }
     // 朋友圈
     return [WBSendMessageToWeiboRequest requestWithMessage:message];
+}
+
+#pragma mark - 三方登录
++ (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished {
+    HasWXInstall
+    
+    [[self defaultShareSDK] setWxLoginFinished:finished];
+    
+    // 1.构造SendAuthReq结构体
+    SendAuthReq *req = [SendAuthReq new];
+    req.scope = @"snsapi_userinfo";
+    req.state = @"123";
+    
+    // 2.应用向微信终端发送一个SendAuthReq消息结构
+    [WXApi sendReq:req];
+}
+
++ (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished {
+    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
+    NSString *refreshURL = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%@&grant_type=refresh_token&refresh_token=%@", shareSDK.wxAppId, shareSDK.wxToken.refresh_token];
+    
+    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:refreshURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error || !data) {
+            BLOCK_EXEC(finished, nil, error);
+            return;
+        }
+        
+        NSError *jsonError;
+        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+        if (jsonError) {
+            BLOCK_EXEC(finished, nil, jsonError);
+            return;
+        }
+        
+        if (obj[@"errcode"]) {
+            error = [NSError errorWithDomain:obj[@"errmsg"] code:[obj[@"errcode"] integerValue] userInfo:nil];
+            BLOCK_EXEC(finished, nil, error);
+            return;
+        }
+        
+        shareSDK.wxToken = [WYWXToken modelWithDict:obj];
+        BLOCK_EXEC(finished, shareSDK.wxToken, nil);
+    }] resume];
+}
+
+#pragma mark - getter
+- (WYWXToken *)wxToken {
+    if (!_wxToken) {
+        _wxToken = [WYWXToken modelWithSaveKey:WYWXTokenKey];
+    }
+    return _wxToken;
 }
 
 @end

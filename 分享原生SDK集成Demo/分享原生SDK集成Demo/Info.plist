@@ -29,17 +29,17 @@
 			<string>weixin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx7074076f395c69d9</string>
+				<string>wx99f7a7e9cdac7e24</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>QQ</string>
+			<string>tencent</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>QQ41c64e35</string>
+				<string>tencent1104133929</string>
 			</array>
 		</dict>
 		<dict>
@@ -90,7 +90,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-<!--  让iOS9 退回到以前可以支持http请求  -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

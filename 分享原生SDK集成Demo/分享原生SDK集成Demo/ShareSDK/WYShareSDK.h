@@ -7,38 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WYWXToken.h"
+#import "WYWXUserinfo.h"
+#import "WYShareResponse.h"
 
-typedef NS_ENUM(NSInteger, WXShareScene) {
-    WXShareSceneSession  = 0,        /**< 聊天界面    */
-    WXShareSceneTimeline = 1,        /**< 朋友圈      */
-    WXShareSceneFavorite = 2,        /**< 收藏       */
-};
-
-typedef NS_ENUM(NSInteger, QQShareScene) {
-    QQShareSceneSession = 0,        /**< 聊天界面    */
-    QQShareSceneQZone   = 1,        /**< 朋友圈      */
-};
-
-typedef NS_ENUM(NSInteger, WeiboShareScene) {
-    WeiboShareSceneSession  = 0,    /**< 聊天界面    */
-    WeiboShareSceneTimeline = 1,    /**< 朋友圈   */
-};
-
-////////////////////////////////////////  WYShareResponse  /////////////////////////////////////////////
-@interface WYShareResponse : NSObject
-
-@property (nonatomic, assign, getter=isSucess, readonly) BOOL success;
-@property (nonatomic, copy, readonly) NSString *errorStr;
-
-+ (instancetype)shareResponseWithSucess:(BOOL)success errorStr:(NSString *)errorStr;
-
-@end
-
-
-////////////////////////////////////////  WYShareSDK   ////////////////////////////////////////////
 @interface WYShareSDK : NSObject
 
-+ (void)registerWeChatApp:(NSString *)wxAppId;
+@property (nonatomic, strong) WYWXToken *wxToken;
+@property (nonatomic, strong) WYWXUserinfo *wxUserinfo;
+
+
++ (instancetype)defaultShareSDK;
+
+#pragma mark - register
++ (void)registerWeChatApp:(NSString *)wxAppId wxAppSecret:(NSString *)wxAppSecret;
 + (void)registerQQApp:(NSString *)qqAppId;
 + (void)registerWeiboApp:(NSString *)wbAppKey;
 
@@ -135,6 +117,9 @@ typedef NS_ENUM(NSInteger, WeiboShareScene) {
              thumbnailData:(NSData *)thumbnailData
                   finished:(void(^)(WYShareResponse *response))finished;
 
+#pragma mark - 三方登录
++ (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished;
 
++ (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
 
 @end

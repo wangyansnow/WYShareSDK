@@ -175,8 +175,8 @@
                                 <color key="textColor" red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XxN-6k-iPX">
-                                <rect key="frame" x="203" y="182" width="107" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XxN-6k-iPX">
+                                <rect key="frame" x="256" y="182" width="109" height="29"/>
                                 <segments>
                                     <segment title="会话"/>
                                     <segment title="朋友圈"/>
@@ -185,8 +185,8 @@
                                     <action selector="wxSceneBtnClick:" destination="BYZ-38-t0r" eventType="valueChanged" id="08c-Vt-d45"/>
                                 </connections>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RPB-1h-5ck">
-                                <rect key="frame" x="203" y="42" width="107" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RPB-1h-5ck">
+                                <rect key="frame" x="256" y="42" width="109" height="29"/>
                                 <segments>
                                     <segment title="会话"/>
                                     <segment title="朋友圈"/>
@@ -195,8 +195,8 @@
                                     <action selector="qqSceneBtnClick:" destination="BYZ-38-t0r" eventType="valueChanged" id="qBU-5I-k6w"/>
                                 </connections>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="GAd-Db-qfl">
-                                <rect key="frame" x="203" y="322" width="107" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="GAd-Db-qfl">
+                                <rect key="frame" x="256" y="322" width="109" height="29"/>
                                 <segments>
                                     <segment title="会话"/>
                                     <segment title="朋友圈"/>
@@ -237,6 +237,43 @@
                                     <constraint firstAttribute="height" constant="40" id="8NN-UY-11z"/>
                                 </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="三方登录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXS-RD-ybb">
+                                <rect key="frame" x="10" y="520" width="69.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.96078431369999995" green="0.65098039220000004" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="LC4-xd-2B0" userLabel="LoginStackView">
+                                <rect key="frame" x="10" y="540.5" width="355" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WcQ-hU-vDY">
+                                        <rect key="frame" x="0.0" y="0.0" width="167.5" height="40"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="微信登录"/>
+                                        <connections>
+                                            <action selector="wxLoginBtnClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="qeG-IR-cvC"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WvR-GQ-Cb1">
+                                        <rect key="frame" x="187.5" y="0.0" width="167.5" height="40"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="QQ登录"/>
+                                        <connections>
+                                            <action selector="qqLoginBtnClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="qNU-fd-xbc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="irW-GC-20e"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZV0-KC-BgI">
+                                <rect key="frame" x="245" y="460" width="103" height="30"/>
+                                <state key="normal" title="刷新微信Token"/>
+                                <connections>
+                                    <action selector="refreshWxTokenBtnClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="SI0-VG-grz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -244,8 +281,10 @@
                             <constraint firstItem="cJP-Np-9Zo" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="3r4-mo-VYn"/>
                             <constraint firstAttribute="trailing" secondItem="RPB-1h-5ck" secondAttribute="trailing" constant="10" id="47t-zd-Car"/>
                             <constraint firstAttribute="trailing" secondItem="cdC-Yj-m6D" secondAttribute="trailing" constant="10" id="6PM-9Z-9rL"/>
+                            <constraint firstAttribute="trailing" secondItem="LC4-xd-2B0" secondAttribute="trailing" constant="10" id="7RS-Tc-FLe"/>
                             <constraint firstItem="hhH-Jy-GCT" firstAttribute="top" secondItem="bAs-bv-Yfq" secondAttribute="bottom" constant="50" id="8CO-XZ-nqJ"/>
                             <constraint firstItem="cJP-Np-9Zo" firstAttribute="top" secondItem="AJ6-GH-iR4" secondAttribute="bottom" constant="50" id="9vb-Df-maB"/>
+                            <constraint firstItem="LC4-xd-2B0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="Bb1-gK-FCO"/>
                             <constraint firstItem="AJ6-GH-iR4" firstAttribute="top" secondItem="Asa-Ni-fo6" secondAttribute="bottom" constant="10" id="Blu-4N-E6V"/>
                             <constraint firstItem="Asa-Ni-fo6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="C3O-Xw-4AT"/>
                             <constraint firstAttribute="trailing" secondItem="AJ6-GH-iR4" secondAttribute="trailing" constant="10" id="Ci6-vv-poN"/>
@@ -255,14 +294,18 @@
                             <constraint firstItem="t5N-iN-pxp" firstAttribute="leading" secondItem="iU7-X6-ypI" secondAttribute="leading" id="OrJ-bs-W5n"/>
                             <constraint firstItem="Asa-Ni-fo6" firstAttribute="top" secondItem="RPB-1h-5ck" secondAttribute="bottom" id="PjQ-nG-EXV"/>
                             <constraint firstItem="AJ6-GH-iR4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="R56-Ab-RJa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZV0-KC-BgI" secondAttribute="trailing" constant="11" id="RZG-b9-uq7"/>
                             <constraint firstAttribute="trailing" secondItem="cJP-Np-9Zo" secondAttribute="trailing" constant="10" id="TOG-6s-7W3"/>
                             <constraint firstItem="cJP-Np-9Zo" firstAttribute="top" secondItem="XxN-6k-iPX" secondAttribute="bottom" id="VYy-BB-CZR"/>
                             <constraint firstItem="cdC-Yj-m6D" firstAttribute="top" secondItem="hhH-Jy-GCT" secondAttribute="bottom" constant="10" id="WeF-Uu-oVf"/>
+                            <constraint firstItem="wXS-RD-ybb" firstAttribute="leading" secondItem="Nnr-s1-EKD" secondAttribute="leading" id="YUG-ND-WRH"/>
                             <constraint firstItem="hhH-Jy-GCT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="Z0B-vN-3N7"/>
+                            <constraint firstItem="wXS-RD-ybb" firstAttribute="top" secondItem="Nnr-s1-EKD" secondAttribute="bottom" constant="30" id="ZKL-v7-Hyo"/>
                             <constraint firstItem="GAd-Db-qfl" firstAttribute="trailing" secondItem="RPB-1h-5ck" secondAttribute="trailing" id="aGh-GG-3tM"/>
                             <constraint firstItem="bAs-bv-Yfq" firstAttribute="top" secondItem="cJP-Np-9Zo" secondAttribute="bottom" constant="10" id="bPp-6M-GJN"/>
                             <constraint firstItem="iU7-X6-ypI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="feI-1M-d4S"/>
                             <constraint firstAttribute="trailing" secondItem="bAs-bv-Yfq" secondAttribute="trailing" constant="10" id="hSN-6H-GVD"/>
+                            <constraint firstItem="LC4-xd-2B0" firstAttribute="top" secondItem="wXS-RD-ybb" secondAttribute="bottom" id="kNo-sD-xuN"/>
                             <constraint firstItem="Nnr-s1-EKD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="lA8-IJ-Tfy"/>
                             <constraint firstAttribute="trailing" secondItem="hhH-Jy-GCT" secondAttribute="trailing" constant="10" id="mOk-hp-kaT"/>
                             <constraint firstItem="hhH-Jy-GCT" firstAttribute="top" secondItem="GAd-Db-qfl" secondAttribute="bottom" id="qC7-XB-pqV"/>
@@ -272,13 +315,14 @@
                             <constraint firstItem="FA0-hD-JYz" firstAttribute="leading" secondItem="t5N-iN-pxp" secondAttribute="leading" id="um5-9d-5nX"/>
                             <constraint firstAttribute="trailing" secondItem="Asa-Ni-fo6" secondAttribute="trailing" constant="10" id="vqd-eF-cx4"/>
                             <constraint firstItem="XxN-6k-iPX" firstAttribute="trailing" secondItem="RPB-1h-5ck" secondAttribute="trailing" id="xN0-DI-uxV"/>
+                            <constraint firstItem="ZV0-KC-BgI" firstAttribute="top" secondItem="cdC-Yj-m6D" secondAttribute="bottom" constant="20" id="y77-rn-mNb"/>
                             <constraint firstItem="cJP-Np-9Zo" firstAttribute="top" secondItem="t5N-iN-pxp" secondAttribute="bottom" id="znY-eI-2aH"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="114" y="7"/>
+            <point key="canvasLocation" x="112.8" y="6.746626686656672"/>
         </scene>
     </scenes>
 </document>

@@ -35,4 +35,11 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
         return; \
     }
 
+#define BLOCK_EXEC(block, ...)  \
+    if (block) {  \
+        dispatch_async(dispatch_get_main_queue(), ^{ \
+            block(__VA_ARGS__); \
+        }); \
+    }; \
+
 #endif /* WYShareDefine_h */
