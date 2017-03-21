@@ -6,9 +6,9 @@
 //  Copyright © 2017年 wangyan. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "WYBaseModel.h"
 
-@interface WYQQUserinfo : NSObject
+@interface WYQQUserinfo : WYBaseModel
 
 @property (nonatomic, copy) NSString *city;
 @property (nonatomic, copy) NSString *figureurl;

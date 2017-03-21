@@ -11,6 +11,7 @@
 #import "WYWXUserinfo.h"
 #import "WYShareResponse.h"
 #import "WYQQUserinfo.h"
+#import "WYQQToken.h"
 
 @interface WYShareSDK : NSObject
 
@@ -122,6 +123,6 @@
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished;
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
 
-+ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, NSError *error))finished;
++ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error))finished;
 
 @end

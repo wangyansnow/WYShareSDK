@@ -12,7 +12,8 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "WYShareDefine.h"
 #import "WYShareSDK.h"
-
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "AppDelegate.h"
 
 @interface ViewController ()
 
@@ -307,7 +308,15 @@
 }
 
 - (IBAction)qqLoginBtnClick {
-    
+    [WYShareSDK wy_QQLoginFinished:^(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error) {
+        if (error) {
+            NSLog(@"error = %@", error);
+            return;
+        }
+        
+        NSLog(@"qqToken = %@", qqToken);
+        NSLog(@"qqUserinfo = %@", qqUserinfo);
+    }];
 }
 
 - (IBAction)refreshWxTokenBtnClick {

@@ -19,7 +19,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 
 @property (nonatomic, copy) void(^finished)(WYShareResponse *response);
 @property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
-@property (nonatomic, copy) void(^qqLoginFinished)(WYQQUserinfo *qqUserinfo, NSError *error);
+@property (nonatomic, copy) void(^qqLoginFinished)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error);
 
 
 @property (nonatomic, copy) NSString *wxAppId;
@@ -52,9 +52,10 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 }
 + (void)registerQQApp:(NSString *)qqAppId {
     // 2.注册QQ
-    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
-    shareSDK.tencentOAuth = [[TencentOAuth alloc] initWithAppId:qqAppId andDelegate:self];
-    shareSDK.tencentOAuth.redirectURI = kQQRedirectURI;    
+    WYShareSDK *shareSDK = [self defaultShareSDK];
+    TencentOAuth *tencentOAuth = [[TencentOAuth alloc] initWithAppId:qqAppId andDelegate:shareSDK];
+    tencentOAuth.redirectURI = kQQRedirectURI;
+    shareSDK.tencentOAuth = tencentOAuth;
 }
 + (void)registerWeiboApp:(NSString *)wbAppKey {
     // 3.注册Weibo
@@ -69,7 +70,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self] || [QQApiInterface handleOpenURL:url delegate:self] || [TencentOAuth HandleOpenURL:url];
+    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self]  || [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:self];
 }
 
 #pragma mark - QQApiInterfaceDelegate/WXApiDelegate
@@ -98,45 +99,44 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 #pragma mark - TencentSessionDelegate
 - (void)tencentDidLogin {
     if (self.tencentOAuth.accessToken.length > 0) {
-        NSString *accessToken = self.tencentOAuth.accessToken; // 3个月有效期
-        NSString *openId = self.tencentOAuth.openId;
-        NSDate *expirationDate =  self.tencentOAuth.expirationDate;
-        NSLog(@"accessToken = %@", accessToken);
-        NSLog(@"openId = %@", openId);
-        NSLog(@"expirationDate = %@", expirationDate);
-        
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:accessToken forKey:@"accessToken"];
-        [userDefaults setObject:openId forKey:@"openId"];
-        [userDefaults setObject:expirationDate forKey:@"expirationDate"];
-        
         // 1.获取用户信息
         [self.tencentOAuth getUserInfo];
         
     } else {
-        NSLog(@"登录不成功，没有获取到accessToken");
+        NSError *error = [NSError errorWithDomain:@"登录QQ失败" code:100 userInfo:nil];
+        BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
     }
 }
 
 - (void)tencentDidNotLogin:(BOOL)cancelled {
-    if (cancelled) {
-        NSLog(@"用户取消登录");
-    } else {
-        NSLog(@"登录失败");
-    }
+    
+    NSString *errorDomain = cancelled ? @"用户取消登录" : @"登录QQ失败";
+    NSError *error = [NSError errorWithDomain:errorDomain code:100 userInfo:nil];
+    BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
 }
 
 - (void)tencentDidNotNetWork {
-    NSLog(@"无网络连接，请设置网络");
+    
+    NSError *error = [NSError errorWithDomain:@"无网络连接，请设置网络" code:100 userInfo:nil];
+    BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
 }
 
 - (void)getUserInfoResponse:(APIResponse *)response {
+    
+    WYQQToken *qqToken = [WYQQToken new];
+    qqToken.openId = self.tencentOAuth.openId;
+    qqToken.expirationDate = self.tencentOAuth.expirationDate;
+    qqToken.accessToken = self.tencentOAuth.accessToken;
+    
     if (response.retCode == URLREQUEST_SUCCEED && response.detailRetCode == kOpenSDKErrorSuccess) {
-        NSLog(@"获取用户信息成功");
-        NSLog(@"userinfo = %@", response.jsonResponse);
+
+        WYQQUserinfo *qqUserinfo = [WYQQUserinfo modelWithDict:response.jsonResponse];
+        BLOCK_EXEC(self.qqLoginFinished, qqUserinfo, qqToken, nil);
+        
     } else {
-        NSLog(@"获取用户信息失败， errorMsg = %@", response.errorMsg);
-        NSLog(@"jsonResponseError = %@", response.jsonResponse);
+        NSString *errorStr = [NSString stringWithFormat:@"登录授权成功，获取用户信息失败 ==> %@", response.errorMsg];
+        NSError *error = [NSError errorWithDomain:errorStr code:200 userInfo:nil];
+        BLOCK_EXEC(self.qqLoginFinished, nil, qqToken, error);
     }
 }
 
@@ -535,10 +535,10 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     }] resume];
 }
 
-+ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, NSError *error))finished {
++ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error))finished {
     NSArray *permissions = @[@"get_user_info", @"get_simple_userinfo", @"add_t"];
-    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
-    
+    WYShareSDK *shareSDK = [self defaultShareSDK];
+    shareSDK.qqLoginFinished = finished;
     
     [shareSDK.tencentOAuth authorize:permissions inSafari:NO];
 }

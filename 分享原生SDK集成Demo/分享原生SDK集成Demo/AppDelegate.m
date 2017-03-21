@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "WYShareSDK.h"
+#import <TencentOpenAPI/TencentOAuth.h>
 
 //#define WXAppId     @"wxd69cc042cbd89299"
 //#define WXAppSecret @""
@@ -19,6 +20,8 @@ static NSString *const WXAppSecret = @"e310f0d8c2037825f1615140a1e76ae5";
 
 
 @interface AppDelegate ()
+
+
 
 @end
 
