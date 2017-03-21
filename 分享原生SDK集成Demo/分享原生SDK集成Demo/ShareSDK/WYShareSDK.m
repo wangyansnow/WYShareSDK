@@ -13,14 +13,19 @@
 #import "WeiboSDK.h"
 #import "WYShareDefine.h"
 
-@interface WYShareSDK ()<WXApiDelegate, QQApiInterfaceDelegate, WeiboSDKDelegate>
+static NSString *const kQQRedirectURI = @"www.qq.com";
+
+@interface WYShareSDK ()<WXApiDelegate, QQApiInterfaceDelegate, WeiboSDKDelegate, TencentSessionDelegate>
 
 @property (nonatomic, copy) void(^finished)(WYShareResponse *response);
 @property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
+@property (nonatomic, copy) void(^qqLoginFinished)(WYQQUserinfo *qqUserinfo, NSError *error);
 
 
 @property (nonatomic, copy) NSString *wxAppId;
 @property (nonatomic, copy) NSString *wxAppSecret;
+
+@property (nonatomic, strong) TencentOAuth *tencentOAuth;
 
 @end
 
@@ -47,12 +52,15 @@
 }
 + (void)registerQQApp:(NSString *)qqAppId {
     // 2.注册QQ
-    TencentOAuth *auth = [[TencentOAuth alloc] initWithAppId:qqAppId andDelegate:nil];
-    NSLog(@"auth = %@", auth);
+    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
+    shareSDK.tencentOAuth = [[TencentOAuth alloc] initWithAppId:qqAppId andDelegate:self];
+    shareSDK.tencentOAuth.redirectURI = kQQRedirectURI;    
 }
 + (void)registerWeiboApp:(NSString *)wbAppKey {
     // 3.注册Weibo
+#if DEBUG
     [WeiboSDK enableDebugMode:YES];
+#endif
     [WeiboSDK registerApp:wbAppKey];
 }
 
@@ -61,7 +69,7 @@
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self] || [QQApiInterface handleOpenURL:url delegate:self];
+    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self] || [QQApiInterface handleOpenURL:url delegate:self] || [TencentOAuth HandleOpenURL:url];
 }
 
 #pragma mark - QQApiInterfaceDelegate/WXApiDelegate
@@ -84,6 +92,51 @@
             WYShareResponse *response = [WYShareResponse shareResponseWithSucess:([qqresp.result intValue] == 0) errorStr:qqresp.errorDescription];
             _finished(response);
         }
+    }
+}
+
+#pragma mark - TencentSessionDelegate
+- (void)tencentDidLogin {
+    if (self.tencentOAuth.accessToken.length > 0) {
+        NSString *accessToken = self.tencentOAuth.accessToken; // 3个月有效期
+        NSString *openId = self.tencentOAuth.openId;
+        NSDate *expirationDate =  self.tencentOAuth.expirationDate;
+        NSLog(@"accessToken = %@", accessToken);
+        NSLog(@"openId = %@", openId);
+        NSLog(@"expirationDate = %@", expirationDate);
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:accessToken forKey:@"accessToken"];
+        [userDefaults setObject:openId forKey:@"openId"];
+        [userDefaults setObject:expirationDate forKey:@"expirationDate"];
+        
+        // 1.获取用户信息
+        [self.tencentOAuth getUserInfo];
+        
+    } else {
+        NSLog(@"登录不成功，没有获取到accessToken");
+    }
+}
+
+- (void)tencentDidNotLogin:(BOOL)cancelled {
+    if (cancelled) {
+        NSLog(@"用户取消登录");
+    } else {
+        NSLog(@"登录失败");
+    }
+}
+
+- (void)tencentDidNotNetWork {
+    NSLog(@"无网络连接，请设置网络");
+}
+
+- (void)getUserInfoResponse:(APIResponse *)response {
+    if (response.retCode == URLREQUEST_SUCCEED && response.detailRetCode == kOpenSDKErrorSuccess) {
+        NSLog(@"获取用户信息成功");
+        NSLog(@"userinfo = %@", response.jsonResponse);
+    } else {
+        NSLog(@"获取用户信息失败， errorMsg = %@", response.errorMsg);
+        NSLog(@"jsonResponseError = %@", response.jsonResponse);
     }
 }
 
@@ -480,6 +533,14 @@
         shareSDK.wxToken = [WYWXToken modelWithDict:obj];
         BLOCK_EXEC(finished, shareSDK.wxToken, nil);
     }] resume];
+}
+
++ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, NSError *error))finished {
+    NSArray *permissions = @[@"get_user_info", @"get_simple_userinfo", @"add_t"];
+    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
+    
+    
+    [shareSDK.tencentOAuth authorize:permissions inSafari:NO];
 }
 
 #pragma mark - getter

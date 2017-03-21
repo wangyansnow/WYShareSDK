@@ -56,6 +56,7 @@
     [super setValue:value forKey:key];
 }
 
+#pragma mark - description
 - (NSString *)description {
     NSDictionary *dict = [self modelDict];
     

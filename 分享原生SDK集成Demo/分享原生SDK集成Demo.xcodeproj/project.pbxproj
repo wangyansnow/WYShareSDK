@@ -24,10 +24,12 @@
 		E35AD7641E7BD86B003F7611 /* WYWXUserinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E35AD7631E7BD86B003F7611 /* WYWXUserinfo.m */; };
 		E35AD7671E7BD893003F7611 /* WYBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E35AD7661E7BD893003F7611 /* WYBaseModel.m */; };
 		E35AD82F1E7F78F7003F7611 /* WYShareResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E35AD82E1E7F78F7003F7611 /* WYShareResponse.m */; };
+		E35AD83A1E7FDEC9003F7611 /* WYQQUserinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E35AD8391E7FDEC9003F7611 /* WYQQUserinfo.m */; };
+		E35AD83D1E80DAC8003F7611 /* WYQQToken.m in Sources */ = {isa = PBXBuildFile; fileRef = E35AD83C1E80DAC8003F7611 /* WYQQToken.m */; };
+		E3CF11AE1E80FBBB009F5FB2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF11AD1E80FBBB009F5FB2 /* TencentOpenAPI.framework */; };
 		E3F5F2501D7AA47500724BCD /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F5F24F1D7AA47500724BCD /* libc++.tbd */; };
 		E3F5F2521D7AA47F00724BCD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F5F2511D7AA47F00724BCD /* Security.framework */; };
 		E3F5F2541D7AAB9A00724BCD /* LaunchImage_iOS_40_confident.png in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F2531D7AAB9A00724BCD /* LaunchImage_iOS_40_confident.png */; };
-		E3F5F25A1D7AC58400724BCD /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F5F2581D7AC58400724BCD /* TencentOpenAPI.framework */; };
 		E3F5F25B1D7AC58400724BCD /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3F5F2591D7AC58400724BCD /* TencentOpenApi_IOS_Bundle.bundle */; };
 		E3F5F25D1D7AC5A500724BCD /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F5F25C1D7AC5A500724BCD /* libiconv.tbd */; };
 		E3F5F25F1D7AC5B200724BCD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F5F25E1D7AC5B200724BCD /* CoreGraphics.framework */; };
@@ -71,10 +73,14 @@
 		E35AD7661E7BD893003F7611 /* WYBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYBaseModel.m; sourceTree = "<group>"; };
 		E35AD82D1E7F78F7003F7611 /* WYShareResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYShareResponse.h; sourceTree = "<group>"; };
 		E35AD82E1E7F78F7003F7611 /* WYShareResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYShareResponse.m; sourceTree = "<group>"; };
+		E35AD8381E7FDEC9003F7611 /* WYQQUserinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYQQUserinfo.h; sourceTree = "<group>"; };
+		E35AD8391E7FDEC9003F7611 /* WYQQUserinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYQQUserinfo.m; sourceTree = "<group>"; };
+		E35AD83B1E80DAC8003F7611 /* WYQQToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYQQToken.h; sourceTree = "<group>"; };
+		E35AD83C1E80DAC8003F7611 /* WYQQToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYQQToken.m; sourceTree = "<group>"; };
+		E3CF11AD1E80FBBB009F5FB2 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		E3F5F24F1D7AA47500724BCD /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E3F5F2511D7AA47F00724BCD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E3F5F2531D7AAB9A00724BCD /* LaunchImage_iOS_40_confident.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage_iOS_40_confident.png; sourceTree = "<group>"; };
-		E3F5F2581D7AC58400724BCD /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		E3F5F2591D7AC58400724BCD /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		E3F5F25C1D7AC5A500724BCD /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		E3F5F25E1D7AC5B200724BCD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -106,6 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3F5F27C1D7BEF0900724BCD /* CoreText.framework in Frameworks */,
+				E3CF11AE1E80FBBB009F5FB2 /* TencentOpenAPI.framework in Frameworks */,
 				E3F5F27A1D7BEEFC00724BCD /* ImageIO.framework in Frameworks */,
 				E3F5F2781D7BEEF400724BCD /* QuartzCore.framework in Frameworks */,
 				E3F5F2631D7ACCAB00724BCD /* libsqlite3.tbd in Frameworks */,
@@ -113,7 +120,6 @@
 				E3F5F25F1D7AC5B200724BCD /* CoreGraphics.framework in Frameworks */,
 				E3F5F25D1D7AC5A500724BCD /* libiconv.tbd in Frameworks */,
 				E3F5F2521D7AA47F00724BCD /* Security.framework in Frameworks */,
-				E3F5F25A1D7AC58400724BCD /* TencentOpenAPI.framework in Frameworks */,
 				E3F5F2501D7AA47500724BCD /* libc++.tbd in Frameworks */,
 				E3226C521D7A9E4B004714FD /* CoreTelephony.framework in Frameworks */,
 				E3F5F2751D7BEEA600724BCD /* libWeiboSDK.a in Frameworks */,
@@ -174,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				E35AD75E1E7BD840003F7611 /* WXModel */,
+				E35AD8371E7FDEB3003F7611 /* QQModel */,
 				E348AF9A1D7D888400CE8A33 /* WYShareDefine.h */,
 				E3F5F2A51D7C0C6700724BCD /* WYShareSDK.h */,
 				E3F5F2A61D7C0C6700724BCD /* WYShareSDK.m */,
@@ -232,10 +239,21 @@
 			path = WXModel;
 			sourceTree = "<group>";
 		};
+		E35AD8371E7FDEB3003F7611 /* QQModel */ = {
+			isa = PBXGroup;
+			children = (
+				E35AD83B1E80DAC8003F7611 /* WYQQToken.h */,
+				E35AD83C1E80DAC8003F7611 /* WYQQToken.m */,
+				E35AD8381E7FDEC9003F7611 /* WYQQUserinfo.h */,
+				E35AD8391E7FDEC9003F7611 /* WYQQUserinfo.m */,
+			);
+			path = QQModel;
+			sourceTree = "<group>";
+		};
 		E3F5F2571D7AC58400724BCD /* QQSDK */ = {
 			isa = PBXGroup;
 			children = (
-				E3F5F2581D7AC58400724BCD /* TencentOpenAPI.framework */,
+				E3CF11AD1E80FBBB009F5FB2 /* TencentOpenAPI.framework */,
 				E3F5F2591D7AC58400724BCD /* TencentOpenApi_IOS_Bundle.bundle */,
 			);
 			path = QQSDK;
@@ -340,6 +358,8 @@
 				E35AD7671E7BD893003F7611 /* WYBaseModel.m in Sources */,
 				E3F5F2A71D7C0C6700724BCD /* WYShareSDK.m in Sources */,
 				E35AD7641E7BD86B003F7611 /* WYWXUserinfo.m in Sources */,
+				E35AD83D1E80DAC8003F7611 /* WYQQToken.m in Sources */,
+				E35AD83A1E7FDEC9003F7611 /* WYQQUserinfo.m in Sources */,
 				E35AD7611E7BD858003F7611 /* WYWXToken.m in Sources */,
 				E3226C301D7A99ED004714FD /* ViewController.m in Sources */,
 				E3226C2D1D7A99ED004714FD /* AppDelegate.m in Sources */,
@@ -471,6 +491,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/WXSDK",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/libWeiboSDK",
+					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/QQSDK",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
@@ -498,6 +519,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/WXSDK",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/libWeiboSDK",
+					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/QQSDK",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",

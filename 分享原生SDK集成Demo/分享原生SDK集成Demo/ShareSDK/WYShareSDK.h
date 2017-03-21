@@ -10,6 +10,7 @@
 #import "WYWXToken.h"
 #import "WYWXUserinfo.h"
 #import "WYShareResponse.h"
+#import "WYQQUserinfo.h"
 
 @interface WYShareSDK : NSObject
 
@@ -119,7 +120,8 @@
 
 #pragma mark - 三方登录
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished;
-
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
+
++ (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, NSError *error))finished;
 
 @end
