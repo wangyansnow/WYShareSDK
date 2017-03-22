@@ -13,9 +13,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.license      = 'MIT'
-  s.source_files = 'ShareSDK/*.{h,m,txt}'
+  s.source_files = 'ShareSDK/**/*.{h,m}'
   s.resource     = 'ShareSDK/libWeiboSDK/WeiboSDK.bundle', 'ShareSDK/QQSDK/TencentOpenApi_IOS_Bundle.bundle'
   s.vendored_libraries  = 'ShareSDK/libWeiboSDK/libWeiboSDK.a', 'ShareSDK/WXSDK/libWeChatSDK.a'
+  s.vendored_frameworks = 'ShareSDK/QQSDK/TencentOpenAPI.framework'
   s.frameworks   = 'ImageIO', 'SystemConfiguration', 'CoreText', 'QuartzCore', 'Security', 'UIKit', 'Foundation', 'CoreGraphics','CoreTelephony'
   s.libraries = 'sqlite3', 'z', 'c++', 'iconv', 'stdc++', 'sqlite3.0'
 

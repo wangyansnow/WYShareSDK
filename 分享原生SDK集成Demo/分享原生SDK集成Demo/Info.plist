@@ -55,6 +55,7 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+<!--  三大平台Schemes   -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>
@@ -88,6 +89,7 @@
 		<string>mqzoneopensdkapi</string>
 		<string>mqzoneopensdk</string>
 	</array>
+    <!--  三大平台Schemes   -->
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
