@@ -304,7 +304,12 @@
         
         NSLog(@"wxToken = %@", wxToken);
         NSLog(@"wxUserinfo = %@", wxUserinfo);
+        [self log];
     }];
+}
+
+- (void)log {
+    NSLog(@"hahah");
 }
 
 - (IBAction)qqLoginBtnClick {
@@ -328,6 +333,10 @@
 
 
 
+#pragma mark - dealloc
+- (void)dealloc {
+    NSLog(@"♻️ Dealloc %@", NSStringFromClass([self class]));
+}
 
 
 @end

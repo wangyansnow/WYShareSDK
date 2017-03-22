@@ -84,14 +84,14 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
         BaseResp *wxresp = (BaseResp *)resp;
         if (_finished) {
             WYShareResponse *response = [WYShareResponse shareResponseWithSucess:(wxresp.errCode == 0) errorStr:wxresp.errStr];
-            _finished(response);
+            BLOCK_EXECRELEASE(_finished, response);
         }
         
     } else if ([resp isKindOfClass:[QQBaseResp class]]) { // QQ分享
         QQBaseResp *qqresp = (QQBaseResp *)resp;
         if (_finished) {
             WYShareResponse *response = [WYShareResponse shareResponseWithSucess:([qqresp.result intValue] == 0) errorStr:qqresp.errorDescription];
-            _finished(response);
+            BLOCK_EXECRELEASE(_finished, response);
         }
     }
 }
@@ -104,7 +104,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
         
     } else {
         NSError *error = [NSError errorWithDomain:@"登录QQ失败" code:100 userInfo:nil];
-        BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
+        BLOCK_EXECRELEASE(self.qqLoginFinished, nil, nil, error);
     }
 }
 
@@ -112,13 +112,13 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     
     NSString *errorDomain = cancelled ? @"用户取消登录" : @"登录QQ失败";
     NSError *error = [NSError errorWithDomain:errorDomain code:100 userInfo:nil];
-    BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
+    BLOCK_EXECRELEASE(self.qqLoginFinished, nil, nil, error);
 }
 
 - (void)tencentDidNotNetWork {
     
     NSError *error = [NSError errorWithDomain:@"无网络连接，请设置网络" code:100 userInfo:nil];
-    BLOCK_EXEC(self.qqLoginFinished, nil, nil, error);
+    BLOCK_EXECRELEASE(self.qqLoginFinished, nil, nil, error);
 }
 
 - (void)getUserInfoResponse:(APIResponse *)response {
@@ -131,12 +131,12 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     if (response.retCode == URLREQUEST_SUCCEED && response.detailRetCode == kOpenSDKErrorSuccess) {
 
         WYQQUserinfo *qqUserinfo = [WYQQUserinfo modelWithDict:response.jsonResponse];
-        BLOCK_EXEC(self.qqLoginFinished, qqUserinfo, qqToken, nil);
+        BLOCK_EXECRELEASE(self.qqLoginFinished, qqUserinfo, qqToken, nil);
         
     } else {
         NSString *errorStr = [NSString stringWithFormat:@"登录授权成功，获取用户信息失败 ==> %@", response.errorMsg];
         NSError *error = [NSError errorWithDomain:errorStr code:200 userInfo:nil];
-        BLOCK_EXEC(self.qqLoginFinished, nil, qqToken, error);
+        BLOCK_EXECRELEASE(self.qqLoginFinished, nil, qqToken, error);
     }
 }
 
@@ -144,7 +144,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 - (void)wy_handleWXLoginResponse:(SendAuthResp *)resp {
     if (resp.errCode != 0)  {
         NSError *error = [NSError errorWithDomain:@"微信客户端授权失败" code:resp.errCode userInfo:nil];
-        BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+        BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
         return;
     };
     
@@ -155,14 +155,14 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
         if (error || !data) {
             NSString *errorStr = [NSString stringWithFormat:@"获取Token失败，%@", error.domain];
             error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
-            BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+            BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
             return;
         }
         
         NSError *jsonError;
         id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
         if (jsonError) {
-            BLOCK_EXEC(_wxLoginFinished, nil, nil, error);
+            BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
             return;
         }
         
@@ -173,11 +173,11 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
             if (error) {
                 NSString *errorStr = [NSString stringWithFormat:@"获取用户详细信息失败,%@", error.domain];
                 error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
-                BLOCK_EXEC(_wxLoginFinished, nil, self.wxToken, error);
+                BLOCK_EXECRELEASE(_wxLoginFinished, nil, self.wxToken, error);
                 return;
             }
 
-            BLOCK_EXEC(_wxLoginFinished, wxUserinfo, self.wxToken, nil);
+            BLOCK_EXECRELEASE(_wxLoginFinished, wxUserinfo, self.wxToken, nil);
         }];
     }] resume];
 }
@@ -188,7 +188,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     NSLog(@"微博分享 statusCode = %zd, userInfo = %@", code, response.requestUserInfo);
     if (_finished) {
         WYShareResponse *res = [WYShareResponse shareResponseWithSucess:(response.statusCode == 0) errorStr:@"微博分享错误"];
-        _finished(res);
+        BLOCK_EXECRELEASE(_finished, res);
     }
 }
 
