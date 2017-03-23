@@ -331,7 +331,13 @@
     }];
 }
 
-
+- (IBAction)weiboLoginBtnClick:(UIButton *)sender {
+    [WYShareSDK wy_weiboLoginFinished:^(WeiboUser *weiboUser, WYWeiboToken *weiboToken, NSError *error) {
+        NSLog(@"error = %@", error);
+        NSLog(@"weiboToken = %@", weiboToken);
+        NSLog(@"weiboUser = %@", weiboUser);
+    }];
+}
 
 #pragma mark - dealloc
 - (void)dealloc {

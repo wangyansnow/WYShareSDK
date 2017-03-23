@@ -3,13 +3,13 @@ Pod::Spec.new do |s|
 
   s.name         = "WYShareSDK"
   s.author             = { "wangyansnow" => "13146597377@163.com" }
-  s.version      = "0.0.1"
+  s.version      = "0.1.0"
   s.summary      = "三大平台登录和分享"
   s.description  = <<-DESC
     qq, 微信， 微博分享以及除了微博的登录
   DESC
   s.homepage     = "https://github.com/wangyansnow/WYShareSDK"
-  s.source       = { :git => "https://github.com/sinaweibosdk/weibo_ios_sdk.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/wangyansnow/WYShareSDK.git", :tag => "#{s.version}" }
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.license      = 'MIT'

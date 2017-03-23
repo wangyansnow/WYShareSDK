@@ -13,13 +13,16 @@
 #import "WeiboSDK.h"
 #import "WYShareDefine.h"
 
+
 static NSString *const kQQRedirectURI = @"www.qq.com";
+static NSString *const kWeiboRedirectURI = @"http://api.imyeliao.com/nightchat/callback";
 
 @interface WYShareSDK ()<WXApiDelegate, QQApiInterfaceDelegate, WeiboSDKDelegate, TencentSessionDelegate>
 
 @property (nonatomic, copy) void(^finished)(WYShareResponse *response);
 @property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
 @property (nonatomic, copy) void(^qqLoginFinished)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error);
+@property (nonatomic, copy) void(^weiboLoginFinished)(WeiboUser *weiboUser, WYWeiboToken *weiboToken, NSError *error);
 
 
 @property (nonatomic, copy) NSString *wxAppId;
@@ -185,10 +188,24 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 #pragma mark - WeiboSDKDelegate
 - (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
     long code = response.statusCode;
-    NSLog(@"微博分享 statusCode = %zd, userInfo = %@", code, response.requestUserInfo);
-    if (_finished) {
-        WYShareResponse *res = [WYShareResponse shareResponseWithSucess:(response.statusCode == 0) errorStr:@"微博分享错误"];
+    if ([response isKindOfClass:[WBSendMessageToWeiboResponse class]]) { // 微博分享
+        WYShareResponse *res = [WYShareResponse shareResponseWithSucess:(response.statusCode == WeiboSDKResponseStatusCodeSuccess) errorStr:@"微博分享错误"];
         BLOCK_EXECRELEASE(_finished, res);
+    } else if ([response isKindOfClass:[WBAuthorizeResponse class]]) { // 微博SSO授权登录
+        if (response.statusCode == WeiboSDKResponseStatusCodeSuccess) {
+            
+            NSString *uid = response.userInfo[@"uid"];
+            NSString *accessToken = response.userInfo[@"access_token"];
+            WYWeiboToken *weiboToken = [WYWeiboToken modelWithDict:response.userInfo];
+            
+            [WBHttpRequest requestForUserProfile:uid withAccessToken:accessToken andOtherProperties:nil queue:nil withCompletionHandler:^(WBHttpRequest *httpRequest,  WeiboUser *user, NSError *error) {
+                
+                BLOCK_EXECRELEASE(self.weiboLoginFinished, user, weiboToken, error);
+            }];
+        } else {
+            NSError *error = [NSError errorWithDomain:@"微博授权失败" code:-100 userInfo:response.userInfo];
+            BLOCK_EXECRELEASE(self.weiboLoginFinished, nil, nil, error);
+        }
     }
 }
 
@@ -508,7 +525,7 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 }
 
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished {
-    WYShareSDK *shareSDK = [WYShareSDK defaultShareSDK];
+    WYShareSDK *shareSDK = [self defaultShareSDK];
     NSString *refreshURL = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%@&grant_type=refresh_token&refresh_token=%@", shareSDK.wxAppId, shareSDK.wxToken.refresh_token];
     
     [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:refreshURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -541,6 +558,18 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     shareSDK.qqLoginFinished = finished;
     
     [shareSDK.tencentOAuth authorize:permissions inSafari:NO];
+}
+
++ (void)wy_weiboLoginFinished:(void(^)(WeiboUser *weiboUser, WYWeiboToken *weiboToken, NSError *error))finished {
+    
+    [[self defaultShareSDK] setWeiboLoginFinished:finished];
+    
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kWeiboRedirectURI;
+    request.scope = @"all";
+    request.userInfo = @{@"SSO_From": @"minyanViewController",
+                         @"action": @"loginBtnClick"};
+    [WeiboSDK sendRequest:request];
 }
 
 #pragma mark - getter

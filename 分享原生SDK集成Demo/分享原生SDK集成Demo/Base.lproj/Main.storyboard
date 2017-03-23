@@ -276,7 +276,7 @@
                                 <rect key="frame" x="10" y="540.5" width="355" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WcQ-hU-vDY">
-                                        <rect key="frame" x="0.0" y="0.0" width="167.5" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="微信登录"/>
                                         <connections>
@@ -284,11 +284,19 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WvR-GQ-Cb1">
-                                        <rect key="frame" x="187.5" y="0.0" width="167.5" height="40"/>
+                                        <rect key="frame" x="125" y="0.0" width="105" height="40"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="QQ登录"/>
                                         <connections>
                                             <action selector="qqLoginBtnClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="qNU-fd-xbc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JqK-4x-A72">
+                                        <rect key="frame" x="250" y="0.0" width="105" height="40"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="微博登录"/>
+                                        <connections>
+                                            <action selector="weiboLoginBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c5t-to-uOh"/>
                                         </connections>
                                     </button>
                                 </subviews>
