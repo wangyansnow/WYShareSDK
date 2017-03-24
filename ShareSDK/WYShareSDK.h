@@ -12,7 +12,7 @@
 #import "WYShareResponse.h"
 #import "WYQQUserinfo.h"
 #import "WYQQToken.h"
-#import "libWeiboSDK/WeiboUser.h"
+#import "WeiboUser.h"
 #import "WYWeiboToken.h"
 
 @interface WYShareSDK : NSObject
