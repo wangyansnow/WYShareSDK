@@ -12,6 +12,8 @@
 #import "WYShareResponse.h"
 #import "WYQQUserinfo.h"
 #import "WYQQToken.h"
+#import "libWeiboSDK/WeiboUser.h"
+#import "WYWeiboToken.h"
 
 @interface WYShareSDK : NSObject
 
@@ -124,5 +126,7 @@
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
 
 + (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error))finished;
+
++ (void)wy_weiboLoginFinished:(void(^)(WeiboUser *weiboUser, WYWeiboToken *weiboToken, NSError *error))finished;
 
 @end

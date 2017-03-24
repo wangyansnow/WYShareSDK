@@ -13,7 +13,7 @@
 #define WXAppId     @"wxd69cc042cbd89299"
 #define WXAppSecret @""
 #define QQAppId     @"1104133929"
-#define WBAppKey    @"2273722657"
+#define WBAppKey    @"2045436852"
 
 
 
@@ -46,5 +46,8 @@
     return [WYShareSDK handleOpenURL:url];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [WYShareSDK handleOpenURL:url];
+}
 
 @end
