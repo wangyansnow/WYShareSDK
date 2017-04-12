@@ -10,16 +10,13 @@
 #import "WYShareSDK.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 
-#define WXAppId     @"wxd69cc042cbd89299"
-#define WXAppSecret @""
+#define WXAppId     @"wx99f7a7e9cdac7e24"
+#define WXAppSecret @"e310f0d8c2037825f1615140a1e76ae5"
 #define QQAppId     @"1104133929"
 #define WBAppKey    @"2045436852"
 
 
-
 @interface AppDelegate ()
-
-
 
 @end
 

@@ -12,7 +12,11 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WeiboSDK.h"
 #import "WYShareDefine.h"
+#import "WYParamObj.h"
 
+#import "WYWXSDK.h"
+
+static NSString *const kWYWXSDK = @"WYWXSDK"; ///< 微信分享类名
 
 static NSString *const kQQRedirectURI = @"www.qq.com";
 static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
@@ -46,13 +50,29 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 }
 
 + (void)registerWeChatApp:(NSString *)wxAppId wxAppSecret:(NSString *)wxAppSecret {
-    WYShareSDK *shareSDK = [self defaultShareSDK];
-    shareSDK.wxAppId = wxAppId;
-    shareSDK.wxAppSecret = wxAppSecret;
+
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = wxAppId;
+    paramObj.param2 = wxAppSecret;
     
-    // 1.注册微信
-    [WXApi registerApp:wxAppId];
+    [self target:kWYWXSDK selector:@selector(wy_registerWeChatApp:) params:paramObj];
 }
+
++ (id)target:(NSString *)className selector:(SEL)selector params:(WYParamObj *)paramObj {
+    Class cls = NSClassFromString(className);
+    if (!cls) {
+        NSAssert(NO, ([NSString stringWithFormat:@"%@转化成类失败", className]));
+        return nil;
+    }
+    
+    if (![cls respondsToSelector:selector]) {
+        NSAssert(NO, ([NSString stringWithFormat:@"%@ 方法不存在", NSStringFromSelector(selector)]));
+        return nil;
+    }
+
+    WY_IgnoredPerformSelectorLeakWarnings(return [cls performSelector:selector withObject:paramObj];);
+}
+
 + (void)registerQQApp:(NSString *)qqAppId {
     // 2.注册QQ
     WYShareSDK *shareSDK = [self defaultShareSDK];
@@ -73,7 +93,12 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    return [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self]  || [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:self];
+    
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = url;
+    SEL selector = @selector(wy_handleOpenURL:);
+    
+    return [[WYShareSDK target:kWYWXSDK selector:selector params:paramObj] boolValue] || [WeiboSDK handleOpenURL:url delegate:self]  || [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:self];
 }
 
 #pragma mark - QQApiInterfaceDelegate/WXApiDelegate
@@ -212,39 +237,26 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 #pragma mark - 微信分享
 + (void)weChatShareText:(NSString *)text
                finished:(void(^)(WYShareResponse *response))finished {
-
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = text;
     
-    [[self defaultShareSDK] setFinished:finished];
-    SendMessageToWXReq *textReq = [[SendMessageToWXReq alloc] init];
-    
-    textReq.bText = YES;
-    textReq.text = text;
-    textReq.scene = WXSceneSession;
-    
-    [WXApi sendReq:textReq];
+    paramObj.shareFinished = finished;
+    [self target:kWYWXSDK selector:@selector(wy_weChatShareText:) params:paramObj];
 }
 
 + (void)weChatShareThumbImage:(UIImage *)thumbImage
                 originalImage:(NSData *)originalImageData
                         scene:(WXShareScene)scene
                      finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
-    [[self defaultShareSDK] setFinished:finished];
-    WXMediaMessage *message = [WXMediaMessage message];
-    [message setThumbImage:thumbImage];
     
-    WXImageObject *imageObject = [WXImageObject object];
-    imageObject.imageData = originalImageData;
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = thumbImage;
+    paramObj.param2 = originalImageData;
+    paramObj.param3 = @(scene);
     
-    message.mediaObject = imageObject;
-    
-    SendMessageToWXReq *imageReq = [[SendMessageToWXReq alloc] init];
-    imageReq.bText = NO;
-    imageReq.message = message;
-    imageReq.scene = scene;
-    [WXApi sendReq:imageReq];
+    paramObj.shareFinished = finished;
+    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
 }
 
 + (void)weChatShareWebURL:(NSString *)url
@@ -253,22 +265,16 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                     title:(NSString *)title
                     scene:(WXShareScene)scene
                  finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
-    [[self defaultShareSDK] setFinished:finished];
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = title;
-    message.description = description;
-    [message setThumbImage:thumbImage];
     
-    WXWebpageObject *webpageObject = [WXWebpageObject object];
-    webpageObject.webpageUrl = url;
-    message.mediaObject = webpageObject;
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = url;
+    paramObj.param2 = description;
+    paramObj.param3 = thumbImage;
+    paramObj.param4 = title;
+    paramObj.param5 = @(scene);
     
-    SendMessageToWXReq *webReq = [[SendMessageToWXReq alloc] init];
-    webReq.bText = NO;
-    webReq.message = message;
-    webReq.scene = scene;
-    [WXApi sendReq:webReq];
+    paramObj.shareFinished = finished;
+    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
 }
 
 + (void)weChatShareMusicURL:(NSString *)musicUrl
@@ -278,26 +284,17 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 description:(NSString *)description
                       scene:(WXShareScene)scene
                    finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
-    [[self defaultShareSDK] setFinished:finished];
     
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = title;
-    message.description = description;
-    [message setThumbImage:thumbImage];
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = musicUrl;
+    paramObj.param2 = musicDataUrl;
+    paramObj.param3 = thumbImage;
+    paramObj.param4 = title;
+    paramObj.param5 = description;
+    paramObj.param6 = @(scene);
     
-    WXMusicObject *musicObj = [WXMusicObject object];
-    musicObj.musicUrl = musicUrl;  // 音乐url
-    musicObj.musicDataUrl = musicDataUrl;  // 音乐数据url
-    message.mediaObject = musicObj;
-    
-    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = scene;
-    
-    [WXApi sendReq:req];
-    
+    paramObj.shareFinished = finished;
+    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
 }
 
 + (void)weChatShareVideoURL:(NSString *)videoUrl
@@ -306,24 +303,16 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 description:(NSString *)description
                       scene:(WXShareScene)scene
                    finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
-    [[self defaultShareSDK] setFinished:finished];
     
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = title;
-    message.description = description;
-    [message setThumbImage:thumbImage];
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.param1 = videoUrl;
+    paramObj.param2 = thumbImage;
+    paramObj.param3 = title;
+    paramObj.param4 = description;
+    paramObj.param5 = @(scene);
     
-    WXVideoObject *videoObj = [WXVideoObject object];
-    videoObj.videoUrl = videoUrl;
-    message.mediaObject = videoObj;
-    
-    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = scene;
-    
-    [WXApi sendReq:req];
+    paramObj.shareFinished = finished;
+    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
 }
 
 #pragma mark - 手机QQ分享
@@ -514,15 +503,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished {
     WY_IgnoredDeprecatedWarnings(HasWXInstall);
     
-    [[self defaultShareSDK] setWxLoginFinished:finished];
-    
-    // 1.构造SendAuthReq结构体
-    SendAuthReq *req = [SendAuthReq new];
-    req.scope = @"snsapi_userinfo";
-    req.state = @"123";
-    
-    // 2.应用向微信终端发送一个SendAuthReq消息结构
-    [WXApi sendReq:req];
+    [WYWXSDK wy_weChatLoginFinished:finished];
 }
 
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished {

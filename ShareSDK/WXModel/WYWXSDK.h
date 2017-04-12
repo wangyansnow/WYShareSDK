@@ -8,13 +8,23 @@
 
 #import "WYWXUserinfo.h"
 #import "WYWXToken.h"
+#import "WYShareResponse.h"
+#import <UIKit/UIKit.h>
 
+@class WYParamObj;
 @interface WYWXSDK : NSObject
 
-+ (void)wy_registerWeChatApp:(NSString *)wxAppId wxAppSecret:(NSString *)wxAppSecret;
-+ (BOOL)wy_handleOpenURL:(NSURL *)url;
++ (void)wy_registerWeChatApp:(WYParamObj *)paramObj;
++ (NSNumber *)wy_handleOpenURL:(WYParamObj *)paramObj;
 
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished;
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
+
+#pragma mark - 微信分享 [文字不可以分享到朋友圈]
++ (void)wy_weChatShareText:(WYParamObj *)paramObj;
++ (void)wy_weChatShareImage:(WYParamObj *)paramObj;
++ (void)wy_weChatShareWeb:(WYParamObj *)paramObj;
++ (void)wy_weChatShareMusic:(WYParamObj *)paramObj;
++ (void)wy_weChatShareVideo:(WYParamObj *)paramObj;
 
 @end

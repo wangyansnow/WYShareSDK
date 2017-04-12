@@ -14,6 +14,7 @@
 #import "WYShareSDK.h"
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "AppDelegate.h"
+#import "WYParamObj.h"
 
 @interface ViewController ()
 
@@ -306,6 +307,20 @@
         NSLog(@"wxUserinfo = %@", wxUserinfo);
         [self log];
     }];
+
+//    BOOL obj = [self classTest];
+//    NSLog(@"obj = %@", obj);
+//    NSLog(@"obj = %d", [self performSelector:@selector(test:) withObject:@[@"minyan"]]);
+}
+
+- (id)classTest {
+    Class cls = [self class];
+    return [self performSelector:@selector(test:) withObject:@[@"minyan"]];
+}
+
+- (void)test:(NSArray *)arr {
+    NSLog(@"arr = %@", arr);
+//    return YES;
 }
 
 - (void)log {
