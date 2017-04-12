@@ -187,7 +187,6 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 
 #pragma mark - WeiboSDKDelegate
 - (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
-    long code = response.statusCode;
     if ([response isKindOfClass:[WBSendMessageToWeiboResponse class]]) { // 微博分享
         WYShareResponse *res = [WYShareResponse shareResponseWithSucess:(response.statusCode == WeiboSDKResponseStatusCodeSuccess) errorStr:@"微博分享错误"];
         BLOCK_EXECRELEASE(_finished, res);
@@ -213,7 +212,10 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 #pragma mark - 微信分享
 + (void)weChatShareText:(NSString *)text
                finished:(void(^)(WYShareResponse *response))finished {
-    HasWXInstall
+
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    
+    
     [[self defaultShareSDK] setFinished:finished];
     SendMessageToWXReq *textReq = [[SendMessageToWXReq alloc] init];
     
@@ -228,7 +230,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 originalImage:(NSData *)originalImageData
                         scene:(WXShareScene)scene
                      finished:(void(^)(WYShareResponse *response))finished {
-    HasWXInstall
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     [[self defaultShareSDK] setFinished:finished];
     WXMediaMessage *message = [WXMediaMessage message];
     [message setThumbImage:thumbImage];
@@ -251,7 +253,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                     title:(NSString *)title
                     scene:(WXShareScene)scene
                  finished:(void(^)(WYShareResponse *response))finished {
-    HasWXInstall
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     [[self defaultShareSDK] setFinished:finished];
     WXMediaMessage *message = [WXMediaMessage message];
     message.title = title;
@@ -276,7 +278,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 description:(NSString *)description
                       scene:(WXShareScene)scene
                    finished:(void(^)(WYShareResponse *response))finished {
-    HasWXInstall
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -304,7 +306,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 description:(NSString *)description
                       scene:(WXShareScene)scene
                    finished:(void(^)(WYShareResponse *response))finished {
-    HasWXInstall
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -327,7 +329,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 #pragma mark - 手机QQ分享
 + (void)qqShareText:(NSString *)text
             finshed:(void(^)(WYShareResponse *response))finished {
-    HasQQInstall
+    WY_IgnoredDeprecatedWarnings(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     QQApiTextObject *textObj = [QQApiTextObject objectWithText:text];
     SendMessageToQQReq *textReq = [SendMessageToQQReq reqWithContent:textObj];
@@ -340,7 +342,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                title:(NSString *)title
          description:(NSString *)description
             finished:(void(^)(WYShareResponse *response))finished {
-    HasQQInstall
+    WY_IgnoredDeprecatedWarnings(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     QQApiImageObject *imgObj = [QQApiImageObject objectWithData:previewImageData
                                                previewImageData:originalImageData
@@ -357,7 +359,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 title:(NSString *)title
                 scene:(QQShareScene)scene
              finished:(void(^)(WYShareResponse *response))finished {
-    HasQQInstall
+    WY_IgnoredDeprecatedWarnings(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     QQApiNewsObject *newsObject = [QQApiNewsObject objectWithURL:[NSURL URLWithString:url] title:title description:description previewImageData:thumbImageData targetContentType:QQApiURLTargetTypeNews];
@@ -375,7 +377,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
             description:(NSString *)description
                   scene:(QQShareScene)scene
                finished:(void(^)(WYShareResponse *response))finished {
-    HasQQInstall
+    WY_IgnoredDeprecatedWarnings(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     QQApiAudioObject *audioObject;
@@ -406,8 +408,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 + (void)weiboShareText:(NSString *)text
                  scene:(WeiboShareScene)scene
               finished:(void(^)(WYShareResponse *response))finished {
-    
-    HasWeiboInstall
+    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -420,7 +421,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                   scene:(WeiboShareScene)scene
                 finshed:(void(^)(WYShareResponse *response))finished {
     
-    HasWeiboInstall
+    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
     
@@ -439,7 +440,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                    scene:(WeiboShareScene)scene
                 finished:(void(^)(WYShareResponse *response))finished {
     
-    HasWeiboInstall
+    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -461,7 +462,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                description:(NSString *)description
              thumbnailData:(NSData *)thumbnailData
                   finished:(void(^)(WYShareResponse *response))finished {
-    HasWeiboInstall
+    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
     
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
@@ -484,7 +485,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                description:(NSString *)description
              thumbnailData:(NSData *)thumbnailData
                   finished:(void(^)(WYShareResponse *response))finished {
-    HasWeiboInstall
+    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
     
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
@@ -511,7 +512,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 
 #pragma mark - 三方登录
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished {
-    HasWXInstall
+    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     
     [[self defaultShareSDK] setWxLoginFinished:finished];
     

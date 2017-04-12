@@ -17,6 +17,13 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
 // 微信: https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419317332&token=&lang=zh_CN
 // QQ: http://wiki.open.qq.com/wiki/mobile/SDK%E4%B8%8B%E8%BD%BD
 
+#define WY_IgnoredDeprecatedWarnings(functions) \
+    do { \
+        _Pragma("clang diagnostic push") \
+        _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"") \
+        _Pragma("clang diagnostic pop") \
+    } while (0) \
+
 #define HasQQInstall \
     if (![QQApiInterface isQQInstalled]) { \
        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装手机QQ" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
