@@ -22,6 +22,7 @@
 		E3226C521D7A9E4B004714FD /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3226C511D7A9E4B004714FD /* CoreTelephony.framework */; };
 		E3A454881E9CC1D10082A4D6 /* WYWXSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A454871E9CC1D10082A4D6 /* WYWXSDK.m */; };
 		E3A4548B1E9DFA8F0082A4D6 /* WYParamObj.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A4548A1E9DFA8F0082A4D6 /* WYParamObj.m */; };
+		E3A4548E1E9E1D340082A4D6 /* WYQQSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A4548D1E9E1D340082A4D6 /* WYQQSDK.m */; };
 		E3AEF84E1E84FD07004E81D6 /* WYBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF8481E84FD07004E81D6 /* WYBaseModel.m */; };
 		E3AEF84F1E84FD07004E81D6 /* WYShareResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF84B1E84FD07004E81D6 /* WYShareResponse.m */; };
 		E3AEF8501E84FD07004E81D6 /* WYShareSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF84D1E84FD07004E81D6 /* WYShareSDK.m */; };
@@ -71,6 +72,8 @@
 		E3A454871E9CC1D10082A4D6 /* WYWXSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYWXSDK.m; sourceTree = "<group>"; };
 		E3A454891E9DFA8F0082A4D6 /* WYParamObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYParamObj.h; sourceTree = "<group>"; };
 		E3A4548A1E9DFA8F0082A4D6 /* WYParamObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYParamObj.m; sourceTree = "<group>"; };
+		E3A4548C1E9E1D340082A4D6 /* WYQQSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYQQSDK.h; sourceTree = "<group>"; };
+		E3A4548D1E9E1D340082A4D6 /* WYQQSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYQQSDK.m; sourceTree = "<group>"; };
 		E3AEF8471E84FD07004E81D6 /* WYBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WYBaseModel.h; path = ../../../ShareSDK/WYBaseModel.h; sourceTree = "<group>"; };
 		E3AEF8481E84FD07004E81D6 /* WYBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WYBaseModel.m; path = ../../../ShareSDK/WYBaseModel.m; sourceTree = "<group>"; };
 		E3AEF8491E84FD07004E81D6 /* WYShareDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WYShareDefine.h; path = ../../../ShareSDK/WYShareDefine.h; sourceTree = "<group>"; };
@@ -247,6 +250,8 @@
 				E3AEF8531E84FD15004E81D6 /* WYQQToken.m */,
 				E3AEF8541E84FD15004E81D6 /* WYQQUserinfo.h */,
 				E3AEF8551E84FD15004E81D6 /* WYQQUserinfo.m */,
+				E3A4548C1E9E1D340082A4D6 /* WYQQSDK.h */,
+				E3A4548D1E9E1D340082A4D6 /* WYQQSDK.m */,
 			);
 			name = QQModel;
 			path = ../../../ShareSDK/QQModel;
@@ -387,6 +392,7 @@
 				E3AEF84E1E84FD07004E81D6 /* WYBaseModel.m in Sources */,
 				E3AEF8621E84FD15004E81D6 /* WYWXUserinfo.m in Sources */,
 				E3A4548B1E9DFA8F0082A4D6 /* WYParamObj.m in Sources */,
+				E3A4548E1E9E1D340082A4D6 /* WYQQSDK.m in Sources */,
 				E3226C301D7A99ED004714FD /* ViewController.m in Sources */,
 				E3226C2D1D7A99ED004714FD /* AppDelegate.m in Sources */,
 				E3AEF8611E84FD15004E81D6 /* WYWXToken.m in Sources */,

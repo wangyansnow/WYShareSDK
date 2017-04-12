@@ -19,7 +19,10 @@
 @property (nonatomic, strong) id param6;
 
 @property (nonatomic, copy) void(^shareFinished)(WYShareResponse *response);
+
 @property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
+@property (nonatomic, copy) void(^wxRefreshTokenFinished)(WYWXToken *wxToken, NSError *error);
+
 @property (nonatomic, copy) void(^qqLoginFinished)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error);
 @property (nonatomic, copy) void(^weiboLoginFinished)(WeiboUser *weiboUser, WYWeiboToken *weiboToken, NSError *error);
 

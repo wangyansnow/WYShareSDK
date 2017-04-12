@@ -50,10 +50,10 @@
 }
 
 #pragma mark - 微信登录
-+ (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
++ (void)wy_weChatLoginFinished:(WYParamObj *)paramObj {
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     
-    [[self defaultWXSDK] setWxLoginFinished:finished];
+    [[self defaultWXSDK] setWxLoginFinished:paramObj.wxLoginFinished];
     
     // 1.构造SendAuthReq结构体
     SendAuthReq *req = [SendAuthReq new];
@@ -64,38 +64,38 @@
     [WXApi sendReq:req];
 }
 
-+ (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished {
++ (void)wy_weChatRefreshAccessToken:(WYParamObj *)paramObj {
     WYWXSDK *wxSDK = [self defaultWXSDK];
     NSString *refreshURL = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%@&grant_type=refresh_token&refresh_token=%@", wxSDK.wxAppId, wxSDK.wxToken.refresh_token];
     
     [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:refreshURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error || !data) {
-            BLOCK_EXEC(finished, nil, error);
+            BLOCK_EXEC(paramObj.wxRefreshTokenFinished, nil, error);
             return;
         }
         
         NSError *jsonError;
         id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
         if (jsonError) {
-            BLOCK_EXEC(finished, nil, jsonError);
+            BLOCK_EXEC(paramObj.wxRefreshTokenFinished, nil, jsonError);
             return;
         }
         
         if (obj[@"errcode"]) {
             error = [NSError errorWithDomain:obj[@"errmsg"] code:[obj[@"errcode"] integerValue] userInfo:nil];
-            BLOCK_EXEC(finished, nil, error);
+            BLOCK_EXEC(paramObj.wxRefreshTokenFinished, nil, error);
             return;
         }
         
         wxSDK.wxToken = [WYWXToken modelWithDict:obj];
-        BLOCK_EXEC(finished, wxSDK.wxToken, nil);
+        BLOCK_EXEC(paramObj.wxRefreshTokenFinished, wxSDK.wxToken, nil);
     }] resume];
 }
 
 #pragma mark - 微信分享 [文字不可以分享到朋友圈]
 + (void)wy_weChatShareText:(WYParamObj *)paramObj {
     
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     [[self defaultWXSDK] setFinished:paramObj.shareFinished];
     
     SendMessageToWXReq *textReq = [[SendMessageToWXReq alloc] init];
@@ -109,7 +109,7 @@
 
 + (void)wy_weChatShareImage:(WYParamObj *)paramObj {
     
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     [[self defaultWXSDK] setFinished:paramObj.shareFinished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -129,7 +129,7 @@
 
 + (void)wy_weChatShareWeb:(WYParamObj *)paramObj {
     
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     [[self defaultWXSDK] setFinished:paramObj.shareFinished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -150,7 +150,7 @@
 
 + (void)wy_weChatShareMusic:(WYParamObj *)paramObj {
     
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     [[self defaultWXSDK] setFinished:paramObj.shareFinished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -174,7 +174,7 @@
 
 + (void)wy_weChatShareVideo:(WYParamObj *)paramObj {
     
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
+    WY_IgnoredDeprecatedWarning(HasWXInstall);
     [[self defaultWXSDK] setFinished:paramObj.shareFinished];
     
     WXMediaMessage *message = [WXMediaMessage message];
@@ -253,6 +253,14 @@
             BLOCK_EXECRELEASE(_wxLoginFinished, wxUserinfo, self.wxToken, nil);
         }];
     }] resume];
+}
+
+#pragma mark - getter
+- (WYWXToken *)wxToken {
+    if (!_wxToken) {
+        _wxToken = [WYWXToken modelWithSaveKey:WYWXTokenKey];
+    }
+    return _wxToken;
 }
 
 @end

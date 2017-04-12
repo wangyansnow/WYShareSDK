@@ -7,21 +7,19 @@
 //
 
 #import "WYShareSDK.h"
-#import "WXApi.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WeiboSDK.h"
+
 #import "WYShareDefine.h"
 #import "WYParamObj.h"
-
-#import "WYWXSDK.h"
 
 static NSString *const kWYWXSDK = @"WYWXSDK"; ///< 微信分享类名
 
 static NSString *const kQQRedirectURI = @"www.qq.com";
 static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 
-@interface WYShareSDK ()<WXApiDelegate, QQApiInterfaceDelegate, WeiboSDKDelegate, TencentSessionDelegate>
+@interface WYShareSDK ()<QQApiInterfaceDelegate, WeiboSDKDelegate, TencentSessionDelegate>
 
 @property (nonatomic, copy) void(^finished)(WYShareResponse *response);
 @property (nonatomic, copy) void(^wxLoginFinished)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error);
@@ -55,7 +53,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param1 = wxAppId;
     paramObj.param2 = wxAppSecret;
     
-    [self target:kWYWXSDK selector:@selector(wy_registerWeChatApp:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_registerWeChatApp:) params:paramObj]);
 }
 
 + (id)target:(NSString *)className selector:(SEL)selector params:(WYParamObj *)paramObj {
@@ -70,7 +68,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
         return nil;
     }
 
-    WY_IgnoredPerformSelectorLeakWarnings(return [cls performSelector:selector withObject:paramObj];);
+    WY_IgnoredPerformSelectorLeakWarning(return [cls performSelector:selector withObject:paramObj];);
 }
 
 + (void)registerQQApp:(NSString *)qqAppId {
@@ -96,26 +94,15 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     
     WYParamObj *paramObj = [WYParamObj new];
     paramObj.param1 = url;
-    SEL selector = @selector(wy_handleOpenURL:);
+    SEL selector;
+    WY_IgnoredPerformSelectorUndeclaredWarning(selector = @selector(wy_handleOpenURL:));
     
     return [[WYShareSDK target:kWYWXSDK selector:selector params:paramObj] boolValue] || [WeiboSDK handleOpenURL:url delegate:self]  || [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:self];
 }
 
 #pragma mark - QQApiInterfaceDelegate/WXApiDelegate
 - (void)onResp:(id)resp {
-    if ([resp isKindOfClass:[BaseResp class]]) { // 微信
-        if ([resp isKindOfClass:[SendAuthResp class]] ) { // 微信登录
-            [self wy_handleWXLoginResponse:resp];
-            return;
-        }
-        
-        BaseResp *wxresp = (BaseResp *)resp;
-        if (_finished) {
-            WYShareResponse *response = [WYShareResponse shareResponseWithSucess:(wxresp.errCode == 0) errorStr:wxresp.errStr];
-            BLOCK_EXECRELEASE(_finished, response);
-        }
-        
-    } else if ([resp isKindOfClass:[QQBaseResp class]]) { // QQ分享
+    if ([resp isKindOfClass:[QQBaseResp class]]) { // QQ分享
         QQBaseResp *qqresp = (QQBaseResp *)resp;
         if (_finished) {
             WYShareResponse *response = [WYShareResponse shareResponseWithSucess:([qqresp.result intValue] == 0) errorStr:qqresp.errorDescription];
@@ -168,48 +155,6 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     }
 }
 
-#pragma mark - private
-- (void)wy_handleWXLoginResponse:(SendAuthResp *)resp {
-    if (resp.errCode != 0)  {
-        NSError *error = [NSError errorWithDomain:@"微信客户端授权失败" code:resp.errCode userInfo:nil];
-        BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
-        return;
-    };
-    
-    NSString *urlStr = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code", self.wxAppId, self.wxAppSecret, resp.code];
-    
-    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:urlStr] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        if (error || !data) {
-            NSString *errorStr = [NSString stringWithFormat:@"获取Token失败，%@", error.domain];
-            error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
-            BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
-            return;
-        }
-        
-        NSError *jsonError;
-        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&jsonError];
-        if (jsonError) {
-            BLOCK_EXECRELEASE(_wxLoginFinished, nil, nil, error);
-            return;
-        }
-        
-        self.wxToken = [WYWXToken modelWithDict:obj];
-        [self.wxToken saveModelWithKey:WYWXTokenKey];
-        
-        [WYWXUserinfo wy_fetchWXUserinfoWithAccessToken:self.wxToken.access_token openId:self.wxToken.openid finished:^(WYWXUserinfo *wxUserinfo, NSError *error) {
-            if (error) {
-                NSString *errorStr = [NSString stringWithFormat:@"获取用户详细信息失败,%@", error.domain];
-                error = [NSError errorWithDomain:errorStr code:error.code userInfo:error.userInfo];
-                BLOCK_EXECRELEASE(_wxLoginFinished, nil, self.wxToken, error);
-                return;
-            }
-
-            BLOCK_EXECRELEASE(_wxLoginFinished, wxUserinfo, self.wxToken, nil);
-        }];
-    }] resume];
-}
-
 #pragma mark - WeiboSDKDelegate
 - (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
     if ([response isKindOfClass:[WBSendMessageToWeiboResponse class]]) { // 微博分享
@@ -242,7 +187,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param1 = text;
     
     paramObj.shareFinished = finished;
-    [self target:kWYWXSDK selector:@selector(wy_weChatShareText:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareText:) params:paramObj]);
 }
 
 + (void)weChatShareThumbImage:(UIImage *)thumbImage
@@ -256,7 +201,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param3 = @(scene);
     
     paramObj.shareFinished = finished;
-    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
 }
 
 + (void)weChatShareWebURL:(NSString *)url
@@ -274,7 +219,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param5 = @(scene);
     
     paramObj.shareFinished = finished;
-    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
 }
 
 + (void)weChatShareMusicURL:(NSString *)musicUrl
@@ -294,7 +239,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param6 = @(scene);
     
     paramObj.shareFinished = finished;
-    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
 }
 
 + (void)weChatShareVideoURL:(NSString *)videoUrl
@@ -312,13 +257,13 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     paramObj.param5 = @(scene);
     
     paramObj.shareFinished = finished;
-    [self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj];
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
 }
 
 #pragma mark - 手机QQ分享
 + (void)qqShareText:(NSString *)text
             finshed:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasQQInstall);
+    WY_IgnoredDeprecatedWarning(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     QQApiTextObject *textObj = [QQApiTextObject objectWithText:text];
     SendMessageToQQReq *textReq = [SendMessageToQQReq reqWithContent:textObj];
@@ -331,7 +276,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                title:(NSString *)title
          description:(NSString *)description
             finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasQQInstall);
+    WY_IgnoredDeprecatedWarning(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     QQApiImageObject *imgObj = [QQApiImageObject objectWithData:previewImageData
                                                previewImageData:originalImageData
@@ -348,7 +293,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                 title:(NSString *)title
                 scene:(QQShareScene)scene
              finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasQQInstall);
+    WY_IgnoredDeprecatedWarning(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     QQApiNewsObject *newsObject = [QQApiNewsObject objectWithURL:[NSURL URLWithString:url] title:title description:description previewImageData:thumbImageData targetContentType:QQApiURLTargetTypeNews];
@@ -366,7 +311,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
             description:(NSString *)description
                   scene:(QQShareScene)scene
                finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasQQInstall);
+    WY_IgnoredDeprecatedWarning(HasQQInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     QQApiAudioObject *audioObject;
@@ -397,7 +342,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 + (void)weiboShareText:(NSString *)text
                  scene:(WeiboShareScene)scene
               finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
+    WY_IgnoredDeprecatedWarning(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -410,7 +355,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                   scene:(WeiboShareScene)scene
                 finshed:(void(^)(WYShareResponse *response))finished {
     
-    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
+    WY_IgnoredDeprecatedWarning(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
     
@@ -429,7 +374,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                    scene:(WeiboShareScene)scene
                 finished:(void(^)(WYShareResponse *response))finished {
     
-    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
+    WY_IgnoredDeprecatedWarning(HasWeiboInstall);
     [[self defaultShareSDK] setFinished:finished];
     
     WBMessageObject *message = [WBMessageObject message];
@@ -451,7 +396,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                description:(NSString *)description
              thumbnailData:(NSData *)thumbnailData
                   finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
+    WY_IgnoredDeprecatedWarning(HasWeiboInstall);
     
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
@@ -474,7 +419,7 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
                description:(NSString *)description
              thumbnailData:(NSData *)thumbnailData
                   finished:(void(^)(WYShareResponse *response))finished {
-    WY_IgnoredDeprecatedWarnings(HasWeiboInstall);
+    WY_IgnoredDeprecatedWarning(HasWeiboInstall);
     
     [[self defaultShareSDK] setFinished:finished];
     WBMessageObject *message = [WBMessageObject message];
@@ -501,37 +446,19 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
 
 #pragma mark - 三方登录
 + (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished {
-    WY_IgnoredDeprecatedWarnings(HasWXInstall);
     
-    [WYWXSDK wy_weChatLoginFinished:finished];
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.wxLoginFinished = finished;
+    
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatLoginFinished:) params:paramObj]);
 }
 
 + (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished {
-    WYShareSDK *shareSDK = [self defaultShareSDK];
-    NSString *refreshURL = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%@&grant_type=refresh_token&refresh_token=%@", shareSDK.wxAppId, shareSDK.wxToken.refresh_token];
     
-    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:refreshURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (error || !data) {
-            BLOCK_EXEC(finished, nil, error);
-            return;
-        }
-        
-        NSError *jsonError;
-        id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-        if (jsonError) {
-            BLOCK_EXEC(finished, nil, jsonError);
-            return;
-        }
-        
-        if (obj[@"errcode"]) {
-            error = [NSError errorWithDomain:obj[@"errmsg"] code:[obj[@"errcode"] integerValue] userInfo:nil];
-            BLOCK_EXEC(finished, nil, error);
-            return;
-        }
-        
-        shareSDK.wxToken = [WYWXToken modelWithDict:obj];
-        BLOCK_EXEC(finished, shareSDK.wxToken, nil);
-    }] resume];
+    WYParamObj *paramObj = [WYParamObj new];
+    paramObj.wxRefreshTokenFinished = finished;
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatRefreshAccessToken:) params:paramObj]);
+    
 }
 
 + (void)wy_QQLoginFinished:(void(^)(WYQQUserinfo *qqUserinfo, WYQQToken *qqToken, NSError *error))finished {
@@ -552,14 +479,6 @@ static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
     request.userInfo = @{@"SSO_From": @"minyanViewController",
                          @"action": @"loginBtnClick"};
     [WeiboSDK sendRequest:request];
-}
-
-#pragma mark - getter
-- (WYWXToken *)wxToken {
-    if (!_wxToken) {
-        _wxToken = [WYWXToken modelWithSaveKey:WYWXTokenKey];
-    }
-    return _wxToken;
 }
 
 @end

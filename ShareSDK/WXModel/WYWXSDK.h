@@ -17,8 +17,8 @@
 + (void)wy_registerWeChatApp:(WYParamObj *)paramObj;
 + (NSNumber *)wy_handleOpenURL:(WYParamObj *)paramObj;
 
-+ (void)wy_weChatLoginFinished:(void(^)(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error))finished;
-+ (void)wy_weChatRefreshAccessToken:(void(^)(WYWXToken *wxToken, NSError *error))finished;
++ (void)wy_weChatLoginFinished:(WYParamObj *)paramObj;
++ (void)wy_weChatRefreshAccessToken:(WYParamObj *)paramObj;
 
 #pragma mark - 微信分享 [文字不可以分享到朋友圈]
 + (void)wy_weChatShareText:(WYParamObj *)paramObj;

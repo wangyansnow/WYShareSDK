@@ -7,18 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WYWXToken.h"
-#import "WYWXUserinfo.h"
 #import "WYShareResponse.h"
 #import "WYQQUserinfo.h"
 #import "WYQQToken.h"
 #import "WeiboUser.h"
 #import "WYWeiboToken.h"
 
+@class WYWXToken, WYWXUserinfo;
 @interface WYShareSDK : NSObject
-
-@property (nonatomic, strong) WYWXToken *wxToken;
-@property (nonatomic, strong) WYWXUserinfo *wxUserinfo;
 
 
 + (instancetype)defaultShareSDK;

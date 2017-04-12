@@ -17,22 +17,29 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
 // 微信: https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419317332&token=&lang=zh_CN
 // QQ: http://wiki.open.qq.com/wiki/mobile/SDK%E4%B8%8B%E8%BD%BD
 
-#define WY_IgnoredDeprecatedWarnings(function) \
+#define WY_IgnoredDeprecatedWarning(function) \
     do { \
         _Pragma("clang diagnostic push") \
         _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"") \
-        function \
+        function; \
         _Pragma("clang diagnostic pop") \
     } while (0) \
 
-#define WY_IgnoredPerformSelectorLeakWarnings(function) \
+#define WY_IgnoredPerformSelectorLeakWarning(function) \
     do { \
         _Pragma("clang diagnostic push") \
         _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
-        function \
+        function; \
         _Pragma("clang diagnostic pop") \
     } while (0) \
 
+#define WY_IgnoredPerformSelectorUndeclaredWarning(function) \
+    do { \
+        _Pragma("clang diagnostic push") \
+        _Pragma("clang diagnostic ignored \"-Wundeclared-selector\"") \
+        function; \
+        _Pragma("clang diagnostic pop") \
+    } while (0)
 
 #define HasQQInstall \
     if (![QQApiInterface isQQInstalled]) { \
