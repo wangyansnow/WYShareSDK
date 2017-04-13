@@ -25,9 +25,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [WYShareSDK registerQQApp:QQAppId];
-    [WYShareSDK registerWeiboApp:WBAppKey];
-    [WYShareSDK registerWeChatApp:WXAppId wxAppSecret:WXAppSecret];
+    [WYShareSDK wy_registerQQApp:QQAppId];
+    [WYShareSDK wy_registerWeiboApp:WBAppKey];
+    [WYShareSDK wy_registerWeChatApp:WXAppId wxAppSecret:WXAppSecret];
     
     return YES;
 }
@@ -35,16 +35,16 @@
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
     
-    return [WYShareSDK handleOpenURL:url];
+    return [WYShareSDK wy_handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     
-    return [WYShareSDK handleOpenURL:url];
+    return [WYShareSDK wy_handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [WYShareSDK handleOpenURL:url];
+    return [WYShareSDK wy_handleOpenURL:url];
 }
 
 @end

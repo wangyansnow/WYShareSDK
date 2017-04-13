@@ -48,6 +48,11 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
 }
 
 + (NSNumber *)wy_handleOpenURL:(NSURL *)url {
+    
+    BOOL result = [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:[self defalutQQSDK]];
+    return @(result);
+    
+    
     return [[self defalutQQSDK] wy_handleOpenURL:url];
 }
 
@@ -124,12 +129,6 @@ static NSString *const kQQRedirectURI = @"www.qq.com";
     }
     // 朋友圈
     [QQApiInterface SendReqToQZone:req];
-}
-
-#pragma mark - private
-- (NSNumber *)wy_handleOpenURL:(NSURL *)url {
-    BOOL result = [TencentOAuth HandleOpenURL:url] || [QQApiInterface handleOpenURL:url delegate:self];
-    return @(result);
 }
 
 #pragma mark - QQApiInterfaceDelegate

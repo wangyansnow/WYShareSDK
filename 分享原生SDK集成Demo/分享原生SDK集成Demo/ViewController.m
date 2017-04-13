@@ -286,7 +286,7 @@
 }
 
 - (IBAction)shareSDKBtnClick {
-    [WYShareSDK weChatShareText:@"分享一个" finished:^(WYShareResponse *response) {
+    [WYShareSDK wy_weChatShareText:@"分享一个" finished:^(WYShareResponse *response) {
         if (response.isSucess) {
             NSLog(@"分享成功");
             return;
@@ -296,7 +296,7 @@
 }
 
 - (IBAction)qqTextShareBtnClick:(UIButton *)sender {
-    [WYShareSDK qqShareText:@"qq分享" finshed:^(WYShareResponse *response) {
+    [WYShareSDK wy_qqShareText:@"qq分享" finshed:^(WYShareResponse *response) {
         if (response.isSucess) {
             NSLog(@"分享成功");
             return;
@@ -305,6 +305,15 @@
     }];
 }
 
+- (IBAction)weiboTextShareBtnClick:(UIButton *)sender {
+    [WYShareSDK wy_weiboShareText:@"微博分享" scene:WeiboShareSceneTimeline finished:^(WYShareResponse *response) {
+        if (response.isSucess) {
+            NSLog(@"分享成功");
+            return;
+        }
+        NSLog(@"分享失败 error = %@", response.errorStr);
+    }];
+}
 
 #pragma mark - 三方登录
 - (IBAction)wxLoginBtnClick {
