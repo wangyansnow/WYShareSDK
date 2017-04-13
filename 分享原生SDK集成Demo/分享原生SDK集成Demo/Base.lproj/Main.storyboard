@@ -305,15 +305,23 @@
                                                 <rect key="frame" x="10" y="554" width="394" height="40"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nnr-s1-EKD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="187" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="118" height="40"/>
                                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                         <state key="normal" title="微信文字分享"/>
                                                         <connections>
                                                             <action selector="shareSDKBtnClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="6FS-3n-GMO"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Sk-avk">
+                                                        <rect key="frame" x="138" y="0.0" width="118" height="40"/>
+                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <state key="normal" title="qq文字分享"/>
+                                                        <connections>
+                                                            <action selector="qqTextShareBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1fh-Sc-dwu"/>
+                                                        </connections>
+                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZV0-KC-BgI">
-                                                        <rect key="frame" x="207" y="0.0" width="187" height="40"/>
+                                                        <rect key="frame" x="276" y="0.0" width="118" height="40"/>
                                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                         <state key="normal" title="刷新微信Token"/>
                                                         <connections>
@@ -321,6 +329,7 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WYShareSDK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FX0-RW-MX7">
                                                 <rect key="frame" x="10" y="533.66666666666652" width="104.33333333333333" height="20.333333333333371"/>

@@ -295,6 +295,17 @@
     }];
 }
 
+- (IBAction)qqTextShareBtnClick:(UIButton *)sender {
+    [WYShareSDK qqShareText:@"qq分享" finshed:^(WYShareResponse *response) {
+        if (response.isSucess) {
+            NSLog(@"分享成功");
+            return;
+        }
+        NSLog(@"分享失败 error = %@", response.errorStr);
+    }];
+}
+
+
 #pragma mark - 三方登录
 - (IBAction)wxLoginBtnClick {
     [WYShareSDK wy_weChatLoginFinished:^(WYWXUserinfo *wxUserinfo, WYWXToken *wxToken, NSError *error) {

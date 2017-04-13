@@ -17,6 +17,7 @@
 @property (nonatomic, strong) id param4;
 @property (nonatomic, strong) id param5;
 @property (nonatomic, strong) id param6;
+@property (nonatomic, strong) id param7;
 
 @property (nonatomic, copy) void(^shareFinished)(WYShareResponse *response);
 

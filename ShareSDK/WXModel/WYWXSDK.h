@@ -6,16 +6,13 @@
 //  Copyright © 2017年 wangyan. All rights reserved.
 //
 
-#import "WYWXUserinfo.h"
-#import "WYWXToken.h"
-#import "WYShareResponse.h"
-#import <UIKit/UIKit.h>
+#import "WYParamObj.h"
 
 @class WYParamObj;
 @interface WYWXSDK : NSObject
 
 + (void)wy_registerWeChatApp:(WYParamObj *)paramObj;
-+ (NSNumber *)wy_handleOpenURL:(WYParamObj *)paramObj;
++ (NSNumber *)wy_handleOpenURL:(NSURL *)url;
 
 + (void)wy_weChatLoginFinished:(WYParamObj *)paramObj;
 + (void)wy_weChatRefreshAccessToken:(WYParamObj *)paramObj;

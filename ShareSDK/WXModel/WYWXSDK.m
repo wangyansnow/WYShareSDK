@@ -7,9 +7,13 @@
 //
 
 #import "WYWXSDK.h"
+#import <UIKit/UIKit.h>
 #import "WXApi.h"
 #import "WYShareDefine.h"
 #import "WYParamObj.h"
+#import "WYWXToken.h"
+#import "WYWXUserinfo.h"
+#import "WYShareResponse.h"
 
 @interface WYWXSDK()<WXApiDelegate>
 
@@ -45,8 +49,8 @@
     wxSDK.wxAppSecret = paramObj.param2;
 }
 
-+ (NSNumber *)wy_handleOpenURL:(WYParamObj *)paramObj {
-    return [[self defaultWXSDK] wy_handleOpenURL:paramObj.param1];
++ (NSNumber *)wy_handleOpenURL:(NSURL *)url {
+    return [[self defaultWXSDK] wy_handleOpenURL:url];
 }
 
 #pragma mark - 微信登录
