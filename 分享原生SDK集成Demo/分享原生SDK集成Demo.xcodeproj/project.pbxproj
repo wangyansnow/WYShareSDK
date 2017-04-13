@@ -26,6 +26,7 @@
 		E3A4549A1E9F519F0082A4D6 /* WYBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A454941E9F519F0082A4D6 /* WYBaseModel.m */; };
 		E3A4549B1E9F519F0082A4D6 /* WYShareResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A454971E9F519F0082A4D6 /* WYShareResponse.m */; };
 		E3A4549C1E9F519F0082A4D6 /* WYShareSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A454991E9F519F0082A4D6 /* WYShareSDK.m */; };
+		E3A4549F1E9F51DE0082A4D6 /* WYParamObj.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A4549E1E9F51DE0082A4D6 /* WYParamObj.m */; };
 		E3AEF85E1E84FD15004E81D6 /* WYQQToken.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF8531E84FD15004E81D6 /* WYQQToken.m */; };
 		E3AEF85F1E84FD15004E81D6 /* WYQQUserinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF8551E84FD15004E81D6 /* WYQQUserinfo.m */; };
 		E3AEF8601E84FD15004E81D6 /* WYWeiboToken.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AEF8581E84FD15004E81D6 /* WYWeiboToken.m */; };
@@ -81,6 +82,8 @@
 		E3A454971E9F519F0082A4D6 /* WYShareResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYShareResponse.m; sourceTree = "<group>"; };
 		E3A454981E9F519F0082A4D6 /* WYShareSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYShareSDK.h; sourceTree = "<group>"; };
 		E3A454991E9F519F0082A4D6 /* WYShareSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYShareSDK.m; sourceTree = "<group>"; };
+		E3A4549D1E9F51DE0082A4D6 /* WYParamObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYParamObj.h; sourceTree = "<group>"; };
+		E3A4549E1E9F51DE0082A4D6 /* WYParamObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYParamObj.m; sourceTree = "<group>"; };
 		E3AEF8521E84FD15004E81D6 /* WYQQToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYQQToken.h; sourceTree = "<group>"; };
 		E3AEF8531E84FD15004E81D6 /* WYQQToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYQQToken.m; sourceTree = "<group>"; };
 		E3AEF8541E84FD15004E81D6 /* WYQQUserinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYQQUserinfo.h; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 		E3A454921E9F519F0082A4D6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E3A4549D1E9F51DE0082A4D6 /* WYParamObj.h */,
+				E3A4549E1E9F51DE0082A4D6 /* WYParamObj.m */,
 				E3A454931E9F519F0082A4D6 /* WYBaseModel.h */,
 				E3A454941E9F519F0082A4D6 /* WYBaseModel.m */,
 				E3A454951E9F519F0082A4D6 /* WYShareDefine.h */,
@@ -397,6 +402,7 @@
 				E3A4549A1E9F519F0082A4D6 /* WYBaseModel.m in Sources */,
 				E3AEF85E1E84FD15004E81D6 /* WYQQToken.m in Sources */,
 				E3AEF8601E84FD15004E81D6 /* WYWeiboToken.m in Sources */,
+				E3A4549F1E9F51DE0082A4D6 /* WYParamObj.m in Sources */,
 				E3A454911E9F12C70082A4D6 /* WYWeiboSDK.m in Sources */,
 				E3AEF8621E84FD15004E81D6 /* WYWXUserinfo.m in Sources */,
 				E3A4548E1E9E1D340082A4D6 /* WYQQSDK.m in Sources */,
