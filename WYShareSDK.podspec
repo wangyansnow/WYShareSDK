@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     qq, 微信， 微博分享以及除了微博的登录
   DESC
   s.homepage     = "https://github.com/wangyansnow/WYShareSDK"
-  s.source       = { :git => "https://github.com/wangyansnow/WYShareSDK.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/wangyansnow/WYShareSDK.git", :tag => "#{s.version}" ,submodules: true}
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.license      = 'MIT'
@@ -21,9 +21,5 @@ Pod::Spec.new do |s|
 
   s.frameworks   = 'ImageIO', 'SystemConfiguration', 'CoreText', 'QuartzCore', 'Security', 'UIKit', 'Foundation', 'CoreGraphics','CoreTelephony'
   s.libraries = 'sqlite3', 'z', 'c++', 'iconv', 'stdc++', 'sqlite3.0'
-
-# s.libraries = 'sqlite3', 'z'
-# s.resource  = "ShareSDK/libWeiboSDK/WeiboSDK.bundle"
-# s.vendored_libraries = "ShareSDK/libWeiboSDK/libWeiboSDK.a"
 
 end
