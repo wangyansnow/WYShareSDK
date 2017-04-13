@@ -7,15 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "WXApi.h"
-#import "WeiboSDK.h"
-#import <TencentOpenAPI/QQApiInterface.h>
-#import "WYShareDefine.h"
 #import "WYShareSDK.h"
-#import <TencentOpenAPI/TencentOAuth.h>
-#import "AppDelegate.h"
-#import "WYParamObj.h"
-
+#import "WYShareDefine.h"
 
 @interface ViewController ()
 
