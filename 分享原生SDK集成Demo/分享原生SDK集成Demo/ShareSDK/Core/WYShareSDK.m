@@ -54,17 +54,24 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     return [[self target:kWYWXSDK selector:selector params:url] boolValue] || [[self target:kWYWeiboSDK selector:selector params:url] boolValue]  || [[self target:kWYQQSDK selector:selector params:url] boolValue];
 }
 
-
 #pragma mark - private
 + (id)target:(NSString *)className selector:(SEL)selector params:(id)paramObj {
     Class cls = NSClassFromString(className);
     if (!cls) {
-        NSAssert(NO, ([NSString stringWithFormat:@"%@转化成类失败", className]));
+#ifdef DEBUG
+        if ([className isEqualToString:kWYWXSDK]) {
+            WYClassError(@"您还没有集成微信SDK，可以在工程的Podfile中使用【pod 'WYShareSDK/WXSDK'】进行集成");
+        } else if ([className isEqualToString:kWYQQSDK]) {
+            WYClassError(@"您还没有集成QQ的SDK，可以在工程的Podfile中使用【pod 'WYShareSDK/QQSDK'】进行集成");
+        } else if ([className isEqualToString:kWYWeiboSDK]) {
+            WYClassError(@"您还没有集成微博SDK，可以在工程的Podfile中使用【pod 'WYShareSDK/WeiboSDK'】进行集成");
+        }
+#endif
+        
         return nil;
     }
     
     if (![cls respondsToSelector:selector]) {
-        NSAssert(NO, ([NSString stringWithFormat:@"%@ 方法不存在", NSStringFromSelector(selector)]));
         return nil;
     }
     

@@ -13,13 +13,31 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.license      = 'MIT'
-
-  s.source_files = 'ShareSDK/**/*.{h,m}'
-  s.resource     = 'ShareSDK/libWeiboSDK/WeiboSDK.bundle', 'ShareSDK/QQSDK/TencentOpenApi_IOS_Bundle.bundle'
-  s.vendored_libraries  = 'ShareSDK/libWeiboSDK/libWeiboSDK.a', 'ShareSDK/WXSDK/libWeChatSDK.a'
-  s.vendored_frameworks = 'ShareSDK/QQSDK/TencentOpenAPI.framework'
-
+  s.source_files = 'ShareSDK/Core/*.{h,m}'
   s.frameworks   = 'ImageIO', 'SystemConfiguration', 'CoreText', 'QuartzCore', 'Security', 'UIKit', 'Foundation', 'CoreGraphics','CoreTelephony'
   s.libraries = 'sqlite3', 'z', 'c++', 'iconv', 'stdc++', 'sqlite3.0'
+
+  s.subspec 'QQSDK' do |ss|
+    ss.source_files = 'ShareSDK/QQModel/*.{h,m}'
+    ss.resource = 'ShareSDK/QQSDK/TencentOpenApi_IOS_Bundle.bundle'
+    ss.vendored_frameworks = 'ShareSDK/QQSDK/TencentOpenAPI.framework'
+    ss.dependency 'WYShareSDK/Core'
+  end
+
+  s.subspec 'WXSDK' do |ss|
+    ss.source_files = 'ShareSDK/WXSDK/*.{h,m}', 'ShareSDK/WXModel/*.{h,m}'
+    ss.vendored_libraries = 'ShareSDK/WXSDK/libWeChatSDK.a'
+    ss.dependency 'WYShareSDK/Core'
+  end
+
+  s.subspec 'WeiboSDK' do |ss|
+    ss.source_files = 'ShareSDK/libWeiboSDK/*.{h,m}', 'ShareSDK/WeiboModel/*.{h,m}'
+    ss.resource = 'ShareSDK/libWeiboSDK/WeiboSDK.bundle'
+    ss.dependency 'WYShareSDK/Core'
+  end
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'ShareSDK/Core/*.{h,m}'
+  end
 
 end

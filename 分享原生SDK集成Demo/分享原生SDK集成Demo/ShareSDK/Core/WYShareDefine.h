@@ -41,6 +41,9 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
         _Pragma("clang diagnostic pop") \
     } while (0)
 
+#define WYClassError(errorMsg) \
+    WY_IgnoredDeprecatedWarning([[[UIAlertView alloc] initWithTitle:@"温馨提示" message:errorMsg delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show])
+
 #define BLOCK_EXEC(block, ...)  \
     if (block) {  \
         dispatch_async(dispatch_get_main_queue(), ^{ \
@@ -55,6 +58,8 @@ static NSString *kWechatMusicURL = @"http://y.qq.com/i/song.html#p=7B22736F6E675
             block = nil; \
         }); \
     }; \
+
+
 
 
 #endif /* WYShareDefine_h */
