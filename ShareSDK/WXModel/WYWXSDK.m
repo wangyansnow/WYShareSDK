@@ -15,6 +15,12 @@
 #import "WYWXUserinfo.h"
 #import "WYShareResponse.h"
 
+#define HasWXInstall \
+    if (![WXApi isWXAppInstalled]) { \
+        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微信" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
+        return; \
+    }
+
 @interface WYWXSDK()<WXApiDelegate>
 
 @property (nonatomic, copy) NSString *wxAppId;

@@ -15,6 +15,12 @@
 #import "WYQQToken.h"
 #import "WYParamObj.h"
 
+#define HasQQInstall \
+    if (![QQApiInterface isQQInstalled]) { \
+        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装手机QQ" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
+        return; \
+    }
+
 static NSString *const kQQRedirectURI = @"www.qq.com";
 
 @interface WYQQSDK ()<QQApiInterfaceDelegate, TencentSessionDelegate>

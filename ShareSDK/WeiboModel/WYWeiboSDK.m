@@ -15,6 +15,12 @@
 #import "WYParamObj.h"
 
 static NSString *const kWeiboRedirectURI = @"http://www.sina.com";
+#define HasWeiboInstall \
+    if (![WeiboSDK isWeiboAppInstalled]) { \
+        [[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您还没有安装微博" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]; \
+        return; \
+    }
+
 
 @interface WYWeiboSDK ()<WeiboSDKDelegate>
 
