@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
   s.subspec 'WeiboSDK' do |ss|
     ss.source_files = 'ShareSDK/libWeiboSDK/*.{h,m}', 'ShareSDK/WeiboModel/*.{h,m}'
     ss.resource = 'ShareSDK/libWeiboSDK/WeiboSDK.bundle'
+    ss.vendored_libraries = 'ShareSDK/libWeiboSDK/libWeiboSDK.a'
     ss.dependency 'WYShareSDK/Core'
   end
 
