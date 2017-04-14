@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   s.name         = "WYShareSDK"
   s.author       = { "wangyansnow" => "13146597377@163.com" }
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "三大平台登录和分享"
   s.description  = <<-DESC
     qq, 微信， 微博分享以及除了微博的登录,可以选择你想要的平台进行集成
