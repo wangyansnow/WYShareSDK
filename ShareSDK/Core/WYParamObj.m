@@ -23,6 +23,7 @@
     while ((nextParam = va_arg(arg_list, id))) {
         [arrM addObject:nextParam];
     }
+    va_end(arg_list);
     
     NSInteger count = arrM.count;
     if (count < 5) {

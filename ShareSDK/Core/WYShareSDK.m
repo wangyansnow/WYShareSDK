@@ -51,11 +51,15 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     SEL selector;
     WY_IgnoredPerformSelectorUndeclaredWarning(selector = @selector(wy_handleOpenURL:));
     
-    return [[self target:kWYWXSDK selector:selector params:url] boolValue] || [[self target:kWYWeiboSDK selector:selector params:url] boolValue]  || [[self target:kWYQQSDK selector:selector params:url] boolValue];
+    return [[self target:kWYWXSDK selector:selector params:url isReturnRequired:YES] boolValue] || [[self target:kWYWeiboSDK selector:selector params:url isReturnRequired:YES] boolValue]  || [[self target:kWYQQSDK selector:selector params:url isReturnRequired:YES] boolValue];
 }
 
 #pragma mark - private
 + (id)target:(NSString *)className selector:(SEL)selector params:(id)paramObj {
+    return [self target:className selector:selector params:paramObj isReturnRequired:NO];
+}
+
++ (id)target:(NSString *)className selector:(SEL)selector params:(id)paramObj isReturnRequired:(BOOL)required {
     Class cls = NSClassFromString(className);
     if (!cls) {
 #ifdef DEBUG
@@ -75,7 +79,13 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
         return nil;
     }
     
-    WY_IgnoredPerformSelectorLeakWarning(return [cls performSelector:selector withObject:paramObj];);
+    if (required) {
+        WY_IgnoredPerformSelectorLeakWarning(return [cls performSelector:selector withObject:paramObj];);
+    } else {
+        WY_IgnoredPerformSelectorLeakWarning([cls performSelector:selector withObject:paramObj];);
+    }
+    
+    return nil;
 }
 
 #pragma mark - ShareMethods
