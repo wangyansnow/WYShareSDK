@@ -67,7 +67,7 @@
     UIImage *previewImage = [UIImage imageNamed:@"ic_account_tyj"];
     NSData *previewData = UIImagePNGRepresentation(previewImage);
     
-    [WYShareSDK wy_qqShareWebURL:url description:@"news short description" thumbImage:previewImage title:@"qq news share" scene:_qqScene finished:^(WYShareResponse *response) {
+    [WYShareSDK wy_qqShareWebURL:url description:@"news short description" thumbImage:previewData title:@"qq news share" scene:_qqScene finished:^(WYShareResponse *response) {
         WYShareFinished(response);
     }];
 }

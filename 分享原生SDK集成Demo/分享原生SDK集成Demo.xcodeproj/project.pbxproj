@@ -355,7 +355,7 @@
 				TargetAttributes = {
 					E3226C241D7A99ED004714FD = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = SX8PGCDPTD;
+						DevelopmentTeam = AWQVP37JFT;
 					};
 				};
 			};
@@ -528,7 +528,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
-				DEVELOPMENT_TEAM = SX8PGCDPTD;
+				DEVELOPMENT_TEAM = AWQVP37JFT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/QQSDK",
@@ -557,7 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
-				DEVELOPMENT_TEAM = SX8PGCDPTD;
+				DEVELOPMENT_TEAM = AWQVP37JFT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/分享原生SDK集成Demo/ShareSDK/QQSDK",

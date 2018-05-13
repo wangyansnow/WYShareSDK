@@ -129,7 +129,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param5 = @(scene);
     
     paramObj.shareFinished = finished;
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareWeb:) params:paramObj]);
 }
 
 + (void)wy_weChatShareMusicURL:(NSString *)musicUrl
@@ -149,7 +149,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param6 = @(scene);
     
     paramObj.shareFinished = finished;
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareMusic:) params:paramObj]);
 }
 
 + (void)wy_weChatShareVideoURL:(NSString *)videoUrl
@@ -167,7 +167,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param5 = @(scene);
     
     paramObj.shareFinished = finished;
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareImage:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWXSDK selector:@selector(wy_weChatShareVideo:) params:paramObj]);
 }
 
 #pragma mark - 手机QQ分享
@@ -277,7 +277,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param5 = @(scene);
     paramObj.shareFinished = finished;
     
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareText:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareWeb:) params:paramObj]);
 }
 
 
@@ -296,7 +296,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param5 = thumbnailData;
     paramObj.shareFinished = finished;
     
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareText:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareMusic:) params:paramObj]);
 }
 
 + (void)wy_weiboShareVideoURL:(NSString *)url
@@ -314,7 +314,7 @@ static NSString *const kWYWeiboSDK = @"WYWeiboSDK"; ///< 微博分享/登录 类
     paramObj.param5 = thumbnailData;
     paramObj.shareFinished = finished;
     
-    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareText:) params:paramObj]);
+    WY_IgnoredPerformSelectorUndeclaredWarning([self target:kWYWeiboSDK selector:@selector(wy_weiboShareVideo:) params:paramObj]);
 }
 
 #pragma mark - 三方登录
